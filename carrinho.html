@@ -17,7 +17,7 @@
     <button class="menu-btn" type="button" aria-label="Abrir menu">⋮</button>
     <nav><a href="index.html">Início</a><a href="colecao.html">Coleção</a><a href="carrinho.html">Carrinho (<span class="cart-count">0</span>)</a><a href="conta.html" data-account-link>Conta</a><a href="chat.html" data-chat-link>Chat</a><a href="admin.html" data-admin-link style="display:none">Admin</a></nav>
     <a class="brand" href="index.html"><img class="logo site-logo" src="images/celine-logo.png" alt="Logótipo CELINE"><span class="wordmark">CELINE</span></a>
-    <a class="cta" href="colecao.html">Ver coleção</a>
+    <a class="cart-chip" href="carrinho.html" style="display:none" aria-label="Abrir carrinho">🛍 <span class="cart-count">0</span></a>
   </div>
 </header>
 <main>
@@ -38,13 +38,13 @@
         <h3 style="font-weight:400;margin-top:0">Para concluir a compra</h3>
         <p id="checkout-status">Para pagar, é preciso ter conta. A conta cria-se com email e senha, sem verificação por email.</p>
         <div id="checkout-table"></div>
-        <table class="mini-table">
+        <table class="mini-table details-card">
           <tr><td>O que recebes</td><td>As peças da tabela, exatamente como estão na foto.</td></tr>
           <tr><td>Como recebes</td><td>Entrega em Maputo ou levantamento na loja em Maputo.</td></tr>
           <tr><td>Quando recebes</td><td>Em 1 a 3 dias úteis, depois do pagamento confirmado.</td></tr>
         </table>
         <p data-delivery-text style="display:none">Entrega em Maputo em 1 a 3 dias úteis, sem custo de entrega. Levantamento na loja em Maputo.</p>
-        <div id="pay-form" style="display:none">
+        <div id="pay-form" class="pay-panel" style="display:none">
           <label for="mpesa-phone">Número M-Pesa</label>
           <input id="mpesa-phone" type="tel" placeholder="84xxxxxxx ou 85xxxxxxx" inputmode="tel">
           <p style="color:#666;line-height:1.7">Só M-Pesa. Confirma o PIN no teu telemóvel.</p>
@@ -140,6 +140,8 @@ document.addEventListener("DOMContentLoaded", async function(){
       var err = document.getElementById("pay-error");
       if (!/^8[45]\d{7}$/.test(phone)) { err.style.display = "block"; err.textContent = "Introduza um número M-Pesa válido, com 9 dígitos, a começar por 84 ou 85."; return; }
       err.style.display = "none";
+      var payBtn = document.getElementById("pay");
+      payBtn.disabled = true; payBtn.textContent = "A processar, espere…";
       try {
         // Create the order first (status: pending_payment — never paid yet).
         var orderRes = await window.celine.supabase.from("orders").insert({
@@ -161,6 +163,7 @@ document.addEventListener("DOMContentLoaded", async function(){
         if (fn.error) throw new Error(fn.error.message || "Pagamento indisponível de momento.");
         var data = fn.data || {};
         if (data.error) throw new Error(data.error);
+        payBtn.textContent = "Confirma o PIN no teu telemóvel…";
         document.getElementById("pay-done").style.display = "block";
         document.getElementById("pay-chat-link").style.display = "block";
         document.getElementById("pay-done").textContent =
@@ -183,6 +186,7 @@ document.addEventListener("DOMContentLoaded", async function(){
         }, 5000);
       } catch (e) {
         // Fallback error only: never marks the order as paid, never fakes it.
+        payBtn.disabled = false; payBtn.textContent = "Pagar com M-Pesa";
         err.style.display = "block";
         err.textContent = "O pagamento não pôde ser criado. O pedido fica pendente e não foi cobrado.";
       }

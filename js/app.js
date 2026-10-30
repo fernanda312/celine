@@ -43,6 +43,21 @@
     updateCartCount: function(){
       var n = window.celine.getCart().reduce(function(s, i){ return s + i.qty; }, 0);
       document.querySelectorAll(".cart-count").forEach(function(el){ el.textContent = n; });
+      // Delicate cart chip on top: only visible while the cart has items.
+      document.querySelectorAll(".cart-chip").forEach(function(el){ el.style.display = n > 0 ? "" : "none"; });
+    },
+    showToast: function(msg){
+      var t = document.getElementById("celine-toast");
+      if (!t) {
+        t = document.createElement("div");
+        t.id = "celine-toast";
+        t.className = "toast";
+        document.body.appendChild(t);
+      }
+      t.textContent = msg;
+      t.classList.add("show");
+      clearTimeout(window.celine._toastTimer);
+      window.celine._toastTimer = setTimeout(function(){ t.classList.remove("show"); }, 2200);
     },
     // ---- pending intent: cart/chat intent saved BEFORE account, resumed after ----
     savePending: function(kind, target){
@@ -182,6 +197,7 @@
       btn.addEventListener("click", async function(){
         var ok = await window.celine.requireAccountForCart(btn.getAttribute("data-add"), 1);
         if (!ok) return;
+        window.celine.showToast("Adicionado ao carrinho");
         var old = btn.textContent;
         btn.textContent = "Adicionado ao carrinho ✓";
         setTimeout(function(){ btn.textContent = old; }, 1800);

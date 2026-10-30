@@ -17,7 +17,7 @@
     <button class="menu-btn" type="button" aria-label="Abrir menu">⋮</button>
     <nav><a href="index.html">Início</a><a href="colecao.html">Coleção</a><a href="carrinho.html">Carrinho (<span class="cart-count">0</span>)</a><a href="conta.html" data-account-link>Conta</a><a href="chat.html" data-chat-link>Chat</a><a href="admin.html" data-admin-link style="display:none">Admin</a></nav>
     <a class="brand" href="index.html"><img class="logo site-logo" src="images/celine-logo.png" alt="Logótipo CELINE"><span class="wordmark">CELINE</span></a>
-    <a class="cta" href="colecao.html">Ver coleção</a>
+    <a class="cart-chip" href="carrinho.html" style="display:none" aria-label="Abrir carrinho">🛍 <span class="cart-count">0</span></a>
   </div>
 </header>
 <main><div class="detail" id="detail"><p>A carregar a peça…</p></div></main>
@@ -72,7 +72,7 @@ document.addEventListener("DOMContentLoaded", async function(){
     document.getElementById("add").disabled = true; document.getElementById("add").textContent = "Esgotado";
     document.getElementById("buy").disabled = true; document.getElementById("buy").textContent = "Esgotado";
   }
-  document.getElementById("add").onclick = async function(e){ if (outOfStock) return; var ok = await window.celine.requireAccountForCart(p.id, qty); if (ok) e.target.textContent = "Adicionado ao carrinho ✓"; };
+  document.getElementById("add").onclick = async function(e){ if (outOfStock) return; var ok = await window.celine.requireAccountForCart(p.id, qty); if (ok) { e.target.textContent = "Adicionado ao carrinho ✓"; window.celine.showToast("Adicionado ao carrinho"); } };
   document.getElementById("buy").onclick = async function(){ if (outOfStock) return; var ok = await window.celine.requireAccountForCart(p.id, qty); if (ok) location.href = "carrinho.html"; };
 });
 </script>

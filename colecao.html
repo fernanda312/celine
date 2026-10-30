@@ -18,7 +18,7 @@
     <button class="menu-btn" type="button" aria-label="Abrir menu">⋮</button>
     <nav><a href="index.html">Início</a><a href="colecao.html">Coleção</a><a href="carrinho.html">Carrinho (<span class="cart-count">0</span>)</a><a href="conta.html" data-account-link>Conta</a><a href="chat.html" data-chat-link>Chat</a><a href="admin.html" data-admin-link style="display:none">Admin</a></nav>
     <a class="brand" href="index.html"><img class="logo site-logo" src="images/celine-logo.png" alt="Logótipo CELINE"><span class="wordmark">CELINE</span></a>
-    <a class="cta" href="index.html">Voltar ao início</a>
+    <a class="cart-chip" href="carrinho.html" style="display:none" aria-label="Abrir carrinho">🛍 <span class="cart-count">0</span></a>
   </div>
 </header>
 <main>
@@ -56,22 +56,10 @@ document.addEventListener("DOMContentLoaded", function(){
     return '<figure class="card"><div class="frame"><img src="' + p.img + '" alt="' + p.name + '"></div><figcaption><h3>' + p.name + '</h3><p>' + p.cat + '</p>' + price
       + '<div class="card-actions"><a class="btn-small" href="produto.html?id=' + p.id + '">' + label + '</a><button class="btn-outline" data-add="' + p.id + '">Adicionar ao carrinho</button></div></figcaption></figure>';
   }
-  function bind(root){
-    root.querySelectorAll("[data-add]").forEach(function(btn){
-      btn.addEventListener("click", async function(){
-        var ok = await window.celine.requireAccountForCart(btn.getAttribute("data-add"), 1);
-        if (!ok) return;
-        var old = btn.textContent; btn.textContent = "Adicionado ao carrinho ✓";
-        setTimeout(function(){ btn.textContent = old; }, 1800);
-      });
-    });
-  }
   var nova = document.getElementById("nova-grid");
   nova.innerHTML = PRODUCTS.filter(function(p){ return p.id.charAt(0) === "n"; }).map(card).join("");
-  bind(nova);
   var orig = document.getElementById("orig-grid");
   orig.innerHTML = PRODUCTS.filter(function(p){ return p.id.charAt(0) === "p"; }).map(card).join("");
-  bind(orig);
 });
 </script>
 <a class="chat-fab" href="chat.html" data-chat-fab style="display:none" aria-label="Abrir chat">💬</a>

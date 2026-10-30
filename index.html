@@ -18,17 +18,16 @@
     <button class="menu-btn" type="button" aria-label="Abrir menu">⋮</button>
     <nav><a href="index.html">Início</a><a href="colecao.html">Coleção</a><a href="carrinho.html">Carrinho (<span class="cart-count">0</span>)</a><a href="conta.html" data-account-link>Conta</a><a href="chat.html" data-chat-link>Chat</a><a href="admin.html" data-admin-link style="display:none">Admin</a></nav>
     <a class="brand" href="index.html"><img class="logo site-logo" src="images/celine-logo.png" alt="Logótipo CELINE"><span class="wordmark">CELINE</span></a>
-    <a class="cta" href="colecao.html">Ver coleção</a>
+    <a class="cart-chip" href="carrinho.html" style="display:none" aria-label="Abrir carrinho">🛍 <span class="cart-count">0</span></a>
   </div>
 </header>
 <main>
   <section class="hero">
     <p class="eyebrow">Bijuteria de luxo</p>
     <figure><img data-hero-img src="images/celine-01.jpg" alt="Mulher com brincos dourados em gota — imagem principal da CELINE"></figure>
-    <h1 data-hero-title>CELINE</h1>
+    <a class="btn" href="colecao.html">Ver coleção</a>
     <p class="cats">Brincos · Pulseiras · Anéis · Colares</p>
     <p data-hero-text>Peças douradas, usadas com presença. O brilho fica na peça — e em quem a usa.</p>
-    <a class="btn" href="colecao.html">Ver a coleção</a>
   </section>
   <section class="intro">
     <h2>Usada, não guardada.</h2>
@@ -109,14 +108,6 @@ document.addEventListener("DOMContentLoaded", function(){
     return '<figure class="card"><div class="frame"><img src="' + p.img + '" alt="' + p.name + '"></div><figcaption><h3>' + p.name + '</h3><p>' + p.cat + '</p><div class="card-actions"><a class="btn-small" href="produto.html?id=' + p.id + '">'
       + label + '</a><button class="btn-outline" data-add="' + p.id + '">Adicionar ao carrinho</button></div></figcaption></figure>';
   }).join("");
-  grid.querySelectorAll("[data-add]").forEach(function(btn){
-    btn.addEventListener("click", async function(){
-      var ok = await window.celine.requireAccountForCart(btn.getAttribute("data-add"), 1);
-      if (!ok) return;
-      var old = btn.textContent; btn.textContent = "Adicionado ao carrinho ✓";
-      setTimeout(function(){ btn.textContent = old; }, 1800);
-    });
-  });
 });
 </script>
 <a class="chat-fab" href="chat.html" data-chat-fab style="display:none" aria-label="Abrir chat">💬</a>
