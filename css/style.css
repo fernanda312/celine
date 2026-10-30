@@ -20,7 +20,7 @@ header{position:sticky;top:0;z-index:10;background:#fff;border-bottom:1px solid 
 .head .cta{font-family:Arial,Helvetica,sans-serif;font-size:12px;letter-spacing:.18em;text-transform:uppercase;background:linear-gradient(135deg,#7a1f2b 0%,#4a0d16 48%,#000 100%);color:#fff;padding:12px 22px;border-radius:999px}
 .head .cta:hover{opacity:.92}
 .menu-btn{display:none}
-@media(max-width:700px){.head{padding:12px 18px;position:relative}.head nav{display:none}.head nav.open{display:flex;flex-direction:column;position:absolute;top:100%;left:0;right:0;background:#fff;padding:20px 24px 24px;border-bottom:1px solid #eee;gap:16px;z-index:20}.menu-btn{display:block;background:none;border:0;padding:10px;font-size:30px;line-height:1;color:#1c1a18;cursor:pointer}.wordmark{font-size:24px}.head .cta{padding:12px 22px;font-size:12px}}
+@media(max-width:700px){.head{padding:12px 10px;position:relative;gap:12px}.head nav{display:none}.head nav.open{display:flex;flex-direction:column;position:absolute;top:100%;left:0;right:0;background:#fff;padding:20px 24px 24px;gap:16px;z-index:20}.menu-btn{display:block;background:none;border:0;padding:8px 6px 8px 0;font-size:30px;line-height:1;color:#1c1a18;cursor:pointer;flex-shrink:0}.brand{gap:10px;min-width:0}.brand img.logo{height:38px}.wordmark{font-size:22px;letter-spacing:.30em;text-indent:.30em}.head .cta{padding:12px 18px;font-size:12px;white-space:nowrap;flex-shrink:0}}
 .hero{background:#fff;text-align:center;padding:64px 20px 80px}
 .hero .eyebrow{font-family:Arial,Helvetica,sans-serif;font-size:11px;letter-spacing:.38em;text-transform:uppercase;color:#7a1f2b;margin:0 0 32px}
 .hero figure{margin:0 auto;max-width:560px}
