@@ -63,6 +63,7 @@ supabase/migrations/20261101000001_celine_core.sql      (tabelas)
 supabase/migrations/20261101000002_celine_rls.sql       (RLS)
 supabase/migrations/20261101000003_celine_seed.sql      (produtos + definições, preços exatos)
 supabase/migrations/20261101000004_celine_storage.sql   (buckets + políticas)
+supabase/migrations/20261101000005_celine_delivery.sql  (textos de entrega, como comprar e confiança, editáveis no admin)
 supabase/functions/_shared/trusted-prices.ts            (preços de confiança do servidor)
 supabase/functions/create-payment/index.ts              (cria o pagamento, só M-Pesa, recalcula no servidor)
 supabase/functions/zumbopay-webhook/index.ts            (verifica HMAC, marca pago, escreve o recibo no chat)
@@ -109,6 +110,7 @@ No Supabase → SQL editor, correr cada ficheiro, nesta ordem:
 2. `supabase/migrations/20261101000002_celine_rls.sql`
 3. `supabase/migrations/20261101000003_celine_seed.sql`
 4. `supabase/migrations/20261101000004_celine_storage.sql`
+5. `supabase/migrations/20261101000005_celine_delivery.sql` (textos de entrega, como comprar e confiança — o comprador muda-os no admin, em Textos)
 
 Confirmar que a tabela `products` tem 24 linhas (p01–p10, n01–n12,
 n15, n16) com os preços da tabela de confiança.

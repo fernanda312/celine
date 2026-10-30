@@ -56,6 +56,9 @@
         <label for="s-hero-title">Título do hero</label><input id="s-hero-title">
         <label for="s-hero-text">Texto do hero</label><textarea id="s-hero-text" rows="3"></textarea>
         <label for="s-store-text">Texto da loja física e online</label><textarea id="s-store-text" rows="3"></textarea>
+        <label for="s-how-text">Como comprar (passos)</label><textarea id="s-how-text" rows="3"></textarea>
+        <label for="s-delivery-text">Texto de entrega</label><textarea id="s-delivery-text" rows="3"></textarea>
+        <label for="s-trust-text">Texto de confiança (loja real, pagamento, recibo)</label><textarea id="s-trust-text" rows="3"></textarea>
         <label for="s-logo-file">Logótipo (ficheiro)</label><input id="s-logo-file" type="file" accept="image/*">
         <label for="s-hero-file">Imagem do hero (ficheiro)</label><input id="s-hero-file" type="file" accept="image/*">
         <div style="margin-top:16px"><button class="btn" type="submit">Guardar textos e imagens</button></div>
@@ -210,6 +213,9 @@ document.addEventListener("DOMContentLoaded", async function(){
     document.getElementById("s-hero-title").value = s.hero_title || "";
     document.getElementById("s-hero-text").value = s.hero_text || "";
     document.getElementById("s-store-text").value = s.store_text || "";
+    document.getElementById("s-how-text").value = s.how_text || "";
+    document.getElementById("s-delivery-text").value = s.delivery_text || "";
+    document.getElementById("s-trust-text").value = s.trust_text || "";
     document.getElementById("st-group").value = s.whatsapp_group_url || "";
     document.getElementById("st-delay").value = s.group_banner_delay_seconds || 90;
     document.getElementById("st-scroll").value = s.group_banner_scroll_percent || 70;
@@ -222,7 +228,10 @@ document.addEventListener("DOMContentLoaded", async function(){
       var row = {
         hero_title: document.getElementById("s-hero-title").value.trim(),
         hero_text: document.getElementById("s-hero-text").value.trim(),
-        store_text: document.getElementById("s-store-text").value.trim()
+        store_text: document.getElementById("s-store-text").value.trim(),
+        how_text: document.getElementById("s-how-text").value.trim(),
+        delivery_text: document.getElementById("s-delivery-text").value.trim(),
+        trust_text: document.getElementById("s-trust-text").value.trim()
       };
       if (logo) row.logo_url = await uploadFile("celine-images", logo);
       if (hero) row.hero_image_url = await uploadFile("celine-images", hero);

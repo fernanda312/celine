@@ -113,6 +113,12 @@
       if (heroText && s.hero_text) heroText.textContent = s.hero_text;
       var storeText = document.querySelector("[data-store-text]");
       if (storeText && s.store_text) storeText.textContent = s.store_text;
+      var howText = document.querySelector("[data-how-text]");
+      if (howText && s.how_text) howText.textContent = s.how_text;
+      var deliveryText = document.querySelector("[data-delivery-text]");
+      if (deliveryText && s.delivery_text) deliveryText.textContent = s.delivery_text;
+      var trustText = document.querySelector("[data-trust-text]");
+      if (trustText && s.trust_text) trustText.textContent = s.trust_text;
       document.querySelectorAll("[data-group-link]").forEach(function(a){ if (s.whatsapp_group_url) a.href = s.whatsapp_group_url; });
       return s;
     },
