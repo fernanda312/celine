@@ -73,6 +73,12 @@
         }
         return {error: r.error.message};
       }
+      // Every signed-in account gets a profile row, even with email
+      // and password only — without it, the admin grant and the
+      // customers list have no row to work on.
+      if (r.data.session) {
+        await sb.from("profiles").upsert({id: r.data.session.user.id, email: email});
+      }
       return {session: r.data.session};
     },
     signUp: async function(email, password, whatsapp){
@@ -86,8 +92,8 @@
         if (s2.error) return {needsOwnerStep: true, detail: s2.error.message};
         session = s2.data.session;
       }
-      if (session && whatsapp) {
-        await sb.from("profiles").upsert({id: session.user.id, email: email, whatsapp: whatsapp});
+      if (session) {
+        await sb.from("profiles").upsert({id: session.user.id, email: email, whatsapp: whatsapp || null});
       }
       return {session: session};
     },

@@ -79,6 +79,9 @@ document.addEventListener("DOMContentLoaded", async function(){
   }
   var session = await window.celine.getSession();
   if (session) {
+    // Make sure this account has a profile row, so the admin grant
+    // and the customers list can find it.
+    await window.celine.supabase.from("profiles").upsert({id: session.user.id, email: session.user.email});
     document.getElementById("auth-box").style.display = "none";
     document.getElementById("account-box").style.display = "block";
     document.getElementById("account-email").textContent = "Email: " + session.user.email;
