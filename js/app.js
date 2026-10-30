@@ -164,12 +164,22 @@
         setTimeout(function(){ btn.textContent = old; }, 1800);
       });
     });
-    // Header account link state.
-    window.celine.getSession().then(function(session){
+    // Header: the same labels everywhere. "Conta" never changes name,
+    // and "Admin" only appears for the admin account, never for customers.
+    window.celine.getSession().then(async function(session){
       document.querySelectorAll("[data-account-link]").forEach(function(a){
-        a.textContent = session ? "A minha conta" : "Conta";
+        a.textContent = "Conta";
         a.href = "conta.html";
       });
+      if (session) {
+        var adminEmail = (cfg.ADMIN_EMAIL || "").toLowerCase();
+        var isAdmin = adminEmail && adminEmail !== "admin_email_por_definir" && session.user.email.toLowerCase() === adminEmail;
+        if (!isAdmin && sb) {
+          var prof = await sb.from("profiles").select("is_admin").eq("id", session.user.id).maybeSingle();
+          isAdmin = !!(prof.data && prof.data.is_admin);
+        }
+        if (isAdmin) document.querySelectorAll("[data-admin-link]").forEach(function(a){ a.style.display = ""; });
+      }
       document.querySelectorAll("[data-chat-link]").forEach(function(a){
         a.addEventListener("click", function(e){
           if (!session) {
