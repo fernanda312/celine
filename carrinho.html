@@ -37,7 +37,7 @@
       <div id="pay-form" style="display:none">
         <label for="mpesa-phone">Número M-Pesa</label>
         <input id="mpesa-phone" type="tel" placeholder="84xxxxxxx ou 85xxxxxxx" inputmode="tel">
-        <p style="color:#666;line-height:1.7">O pagamento é só por M-Pesa. Depois de confirmar, receba a confirmação no seu telemóvel e aguarde a confirmação da CELINE aqui e no chat.</p>
+        <p style="color:#666;line-height:1.7">Só M-Pesa. Confirma o PIN no teu telemóvel.</p>
         <button class="btn" id="pay" type="button">Pagar com M-Pesa</button>
       </div>
       <div id="pay-error" class="msg err" style="display:none"></div>
@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", function(){
       return '<div class="cart-row"><img src="' + p.img + '" alt="' + p.name + '"><div><h3>' + p.name + '</h3><p>' + p.cat + '</p><p>Quantidade: ' + item.qty + '</p></div><div style="text-align:right"><p>' + (p.price ? fmtMT(line) : "Preço a confirmar") + '</p><button class="btn-outline" data-remove="' + p.id + '" type="button">Tirar</button></div></div>';
     }).join("");
     totalEl.textContent = "Total das peças com preço: " + fmtMT(total);
-    if (hasUnpriced) totalEl.textContent += " — as peças sem preço não entram no pagamento online; fale connosco no chat para as confirmar.";
+    if (hasUnpriced) totalEl.textContent += " — peças sem preço não entram no pagamento online.";
     document.querySelectorAll("[data-remove]").forEach(function(b){
       b.onclick = function(){ window.celine.saveCart(window.celine.getCart().filter(function(i){ return i.id !== b.getAttribute("data-remove"); })); render(); };
     });
@@ -75,24 +75,25 @@ document.addEventListener("DOMContentLoaded", function(){
     var cart = window.celine.getCart();
     if (!cart.length) { alert("O seu carrinho está vazio."); return; }
     document.getElementById("checkout-box").style.display = "block";
+    document.getElementById("checkout").style.display = "none";
     if (!window.celine.configured) {
-      document.getElementById("checkout-status").textContent = "A loja ainda está a ser ligada. Guarde o seu carrinho e volte mais tarde — nenhuma compra é cobrada aqui sem conta e sem pagamento confirmado.";
+      document.getElementById("checkout-status").textContent = "A loja ainda está a ser ligada.";
       return;
     }
     var session = await window.celine.getSession();
     if (!session) {
       // HARD GATE: save the pending cart intent, then account, then back here.
       window.celine.savePending("checkout", "carrinho.html");
-      document.getElementById("checkout-status").textContent = "Para concluir a compra, primeiro crie a sua conta. O seu carrinho fica guardado e volta aqui depois da conta.";
+      document.getElementById("checkout-status").textContent = "Cria a tua conta primeiro. O carrinho fica guardado.";
       setTimeout(function(){ location.href = "conta.html"; }, 1200);
       return;
     }
     var priced = cart.filter(function(i){ var p = productById(i.id); return p && p.price; });
     if (!priced.length) {
-      document.getElementById("checkout-status").textContent = "O seu carrinho só tem peças sem preço. Fale connosco no chat para confirmar o preço — peças sem preço não podem ser pagas online.";
+      document.getElementById("checkout-status").textContent = "Só tens peças sem preço. Fala connosco no chat para confirmar o preço.";
       return;
     }
-    document.getElementById("checkout-status").textContent = "Conta confirmada. Introduza o seu número M-Pesa para pagar as peças com preço.";
+    document.getElementById("checkout-status").textContent = "Conta confirmada.";
     document.getElementById("pay-form").style.display = "block";
     document.getElementById("pay").onclick = async function(){
       var phone = document.getElementById("mpesa-phone").value.trim().replace(/\s+/g, "");
@@ -122,15 +123,14 @@ document.addEventListener("DOMContentLoaded", function(){
         if (data.error) throw new Error(data.error);
         document.getElementById("pay-done").style.display = "block";
         document.getElementById("pay-done").textContent =
-          "Pedido criado. Não saias do site: o pedido de PIN vai aparecer no teu telemóvel M-Pesa — confirma o PIN aí. " +
-          "Não há redirecionamento para outro site. " +
-          "O pedido só fica pago depois da confirmação — pode acompanhar o estado na sua conta e no chat.";
+          "Pedido criado. Confirma o PIN no teu telemóvel. " +
+          "Acompanha o estado na conta e no chat.";
         window.celine.saveCart([]);
         render();
       } catch (e) {
         // Fallback error only: never marks the order as paid, never fakes it.
         err.style.display = "block";
-        err.textContent = "O pagamento ainda não pôde ser criado: " + e.message + " O seu pedido fica pendente e não foi cobrado. Fale connosco no chat.";
+        err.textContent = "O pagamento não pôde ser criado. O pedido fica pendente e não foi cobrado.";
       }
     };
   };

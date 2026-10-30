@@ -85,7 +85,9 @@ footer p{font-family:Arial,Helvetica,sans-serif;font-size:12px;letter-spacing:.1
 .cart-row h3{margin:0;font-weight:400}
 .cart-row p{color:#777;margin:6px 0}
 .cart-total{font-size:20px;text-align:right;margin:28px 0}
-.note{border:1px solid #eee;padding:24px;margin-top:28px}
+.note{border:1px solid #eee;border-radius:4px;padding:32px;margin-top:32px;background:#fff;box-shadow:0 20px 50px rgba(0,0,0,.14)}
+.note .btn{width:100%;text-align:center}
+.note input{padding:14px;font-size:17px}
 .note p{color:#666;line-height:1.7}
 input,textarea,select{width:100%;padding:12px;border:1px solid #ddd;background:#fff;font-family:Georgia,serif;font-size:16px}
 label{font-family:Arial,Helvetica,sans-serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#777;display:block;margin:16px 0 6px}
