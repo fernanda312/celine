@@ -20,7 +20,7 @@ header{position:sticky;top:0;z-index:10;background:#fff;border-bottom:1px solid 
 .head .cta{font-family:Arial,Helvetica,sans-serif;font-size:12px;letter-spacing:.18em;text-transform:uppercase;background:linear-gradient(135deg,#7a1f2b 0%,#4a0d16 48%,#000 100%);color:#fff;padding:12px 22px;border-radius:999px}
 .head .cta:hover{opacity:.92}
 .menu-btn{display:none}
-@media(max-width:700px){.head{padding:12px 10px;position:relative;gap:12px}.head nav{display:none}.head nav.open{display:flex;flex-direction:column;position:absolute;top:100%;left:0;right:0;background:#fff;padding:20px 24px 24px;gap:16px;z-index:20}.menu-btn{display:block;background:none;border:0;padding:8px 6px 8px 0;font-size:30px;line-height:1;color:#1c1a18;cursor:pointer;flex-shrink:0}.brand{gap:10px;min-width:0}.brand img.logo{height:38px}.wordmark{font-size:22px;letter-spacing:.30em;text-indent:.30em}.head .cta{padding:12px 18px;font-size:12px;white-space:nowrap;flex-shrink:0}}
+@media(max-width:700px){.head{padding:14px 12px;position:relative;justify-content:center}.head nav{display:none}.head nav.open{display:flex;flex-direction:column;position:absolute;top:100%;left:0;right:0;background:#fff;padding:20px 24px 24px;gap:16px;z-index:20}.menu-btn{display:block;background:none;border:0;padding:8px;font-size:28px;line-height:1;color:#1c1a18;cursor:pointer;position:absolute;left:10px;top:50%;transform:translateY(-50%)}.brand{gap:10px}.brand img.logo{height:38px}.wordmark{font-size:22px;letter-spacing:.28em;text-indent:.28em}.head .cta{padding:12px 20px;font-size:12px;white-space:nowrap;position:absolute;right:10px;top:50%;transform:translateY(-50%)}.hero{padding:48px 20px 64px}.hero h1{font-size:36px;letter-spacing:.22em;text-indent:.22em}}
 .hero{background:#fff;text-align:center;padding:64px 20px 80px}
 .hero .eyebrow{font-family:Arial,Helvetica,sans-serif;font-size:11px;letter-spacing:.38em;text-transform:uppercase;color:#7a1f2b;margin:0 0 32px}
 .hero figure{margin:0 auto;max-width:560px}
@@ -98,6 +98,16 @@ label{font-family:Arial,Helvetica,sans-serif;font-size:12px;letter-spacing:.14em
 .msg.err{border-color:#7a1f2b;color:#7a1f2b}
 /* Chat: full screen, WhatsApp-style. Never a floating bubble. */
 .chatpage{max-width:760px;margin:0 auto;padding:24px 16px 40px}
+.overlay{position:fixed;inset:0;background:rgba(20,15,15,.35);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:none;align-items:flex-start;justify-content:center;padding:24px 16px;z-index:50;overflow:auto}
+.overlay.open{display:flex}
+.overlay-panel{background:#fff;border-radius:16px;padding:28px;max-width:480px;width:100%;box-shadow:0 24px 60px rgba(0,0,0,.25);margin:auto;position:relative}
+.overlay-panel .btn{width:100%;text-align:center}
+.overlay-panel .btn-outline{width:100%;text-align:center}
+.overlay-close{position:absolute;top:10px;right:14px;background:none;border:0;font-size:26px;line-height:1;cursor:pointer;color:#777}
+.mini-table{width:100%;border-collapse:collapse;margin:16px 0}
+.mini-table td{padding:10px 0;border-bottom:1px solid #eee;line-height:1.6}
+.mini-table td:first-child{color:#7a1f2b;padding-right:14px;white-space:nowrap}
+.chat-fab{position:fixed;right:20px;bottom:20px;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#7a1f2b,#4a0d16 48%,#000);color:#fff;align-items:center;justify-content:center;font-size:24px;box-shadow:0 12px 30px rgba(0,0,0,.20);z-index:40}
 .chathead{display:flex;align-items:center;gap:14px;border-bottom:1px solid #eee;padding:12px 0}
 .chathead img{width:44px;height:44px}
 .chathead h1{font-size:20px;font-weight:400;margin:0}

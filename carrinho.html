@@ -14,7 +14,7 @@
 <body>
 <header>
   <div class="head">
-    <button class="menu-btn" type="button" aria-label="Abrir menu">☰</button>
+    <button class="menu-btn" type="button" aria-label="Abrir menu">⋮</button>
     <nav><a href="index.html">Início</a><a href="colecao.html">Coleção</a><a href="carrinho.html">Carrinho (<span class="cart-count">0</span>)</a><a href="conta.html" data-account-link>Conta</a><a href="chat.html" data-chat-link>Chat</a><a href="admin.html" data-admin-link style="display:none">Admin</a></nav>
     <a class="brand" href="index.html"><img class="logo site-logo" src="images/celine-logo.png" alt="Logótipo CELINE"><span class="wordmark">CELINE</span></a>
     <a class="cta" href="colecao.html">Ver coleção</a>
@@ -32,19 +32,28 @@
     <!-- Checkout gate: nobody concludes a purchase without an account.
          If not logged in, the cart is saved as a pending intent and the
          visitor is sent to create an account, then returned here. -->
-    <div class="note" id="checkout-box" style="display:none">
-      <h3 style="font-weight:400">Para concluir a compra</h3>
-      <p id="checkout-status">Para pagar, é preciso ter conta. A conta cria-se com email e senha, sem verificação por email.</p>
-      <p data-delivery-text>Entrega em Maputo em 1 a 3 dias úteis, sem custo de entrega. Levantamento na loja em Maputo.</p>
-      <div id="pay-form" style="display:none">
-        <label for="mpesa-phone">Número M-Pesa</label>
-        <input id="mpesa-phone" type="tel" placeholder="84xxxxxxx ou 85xxxxxxx" inputmode="tel">
-        <p style="color:#666;line-height:1.7">Só M-Pesa. Confirma o PIN no teu telemóvel.</p>
-        <button class="btn" id="pay" type="button">Pagar com M-Pesa</button>
+    <div class="overlay" id="checkout-box">
+      <div class="overlay-panel">
+        <button class="overlay-close" id="checkout-close" type="button" aria-label="Fechar">×</button>
+        <h3 style="font-weight:400;margin-top:0">Para concluir a compra</h3>
+        <p id="checkout-status">Para pagar, é preciso ter conta. A conta cria-se com email e senha, sem verificação por email.</p>
+        <div id="checkout-table"></div>
+        <table class="mini-table">
+          <tr><td>O que recebes</td><td>As peças da tabela, exatamente como estão na foto.</td></tr>
+          <tr><td>Como recebes</td><td>Entrega em Maputo ou levantamento na loja em Maputo.</td></tr>
+          <tr><td>Quando recebes</td><td>Em 1 a 3 dias úteis, depois do pagamento confirmado.</td></tr>
+        </table>
+        <p data-delivery-text style="display:none">Entrega em Maputo em 1 a 3 dias úteis, sem custo de entrega. Levantamento na loja em Maputo.</p>
+        <div id="pay-form" style="display:none">
+          <label for="mpesa-phone">Número M-Pesa</label>
+          <input id="mpesa-phone" type="tel" placeholder="84xxxxxxx ou 85xxxxxxx" inputmode="tel">
+          <p style="color:#666;line-height:1.7">Só M-Pesa. Confirma o PIN no teu telemóvel.</p>
+          <button class="btn" id="pay" type="button">Pagar com M-Pesa</button>
+        </div>
+        <div id="pay-error" class="msg err" style="display:none"></div>
+        <p id="pay-done" style="display:none;color:#666;line-height:1.7"></p>
+        <div id="pay-chat-link" style="display:none;margin-top:16px"><a class="btn" href="chat.html">Ir para o chat</a></div>
       </div>
-      <div id="pay-error" class="msg err" style="display:none"></div>
-      <p id="pay-done" style="display:none;color:#666;line-height:1.7"></p>
-      <div id="pay-chat-link" style="display:none;margin-top:16px"><a class="btn" href="chat.html">Ir para o chat</a></div>
     </div>
   </div>
 </main>
@@ -85,11 +94,28 @@ document.addEventListener("DOMContentLoaded", async function(){
     });
   }
   render();
+  document.getElementById("checkout-close").onclick = function(){
+    document.getElementById("checkout-box").classList.remove("open");
+    document.getElementById("checkout").style.display = "";
+  };
+  document.getElementById("checkout-box").addEventListener("click", function(e){
+    if (e.target === this) {
+      this.classList.remove("open");
+      document.getElementById("checkout").style.display = "";
+    }
+  });
   document.getElementById("checkout").onclick = async function(){
     var cart = window.celine.getCart();
     if (!cart.length) { alert("O seu carrinho está vazio."); return; }
-    document.getElementById("checkout-box").style.display = "block";
+    document.getElementById("checkout-box").classList.add("open");
     document.getElementById("checkout").style.display = "none";
+    // Visible table: what you receive, quantity, price, total.
+    var pricedTotal = 0;
+    document.getElementById("checkout-table").innerHTML = "<table class='mini-table'>" + cart.map(function(item){
+      var p = productById(item.id); if (!p) return "";
+      if (p.price) pricedTotal += p.price * item.qty;
+      return "<tr><td>" + p.name + " × " + item.qty + "</td><td style='text-align:right'>" + (p.price ? fmtMT(p.price * item.qty) : "Preço a confirmar") + "</td></tr>";
+    }).join("") + "<tr><td><strong>Total a pagar</strong></td><td style='text-align:right'><strong>" + fmtMT(pricedTotal) + "</strong></td></tr></table>";
     if (!window.celine.configured) {
       document.getElementById("checkout-status").textContent = "A loja ainda está a ser ligada.";
       return;
@@ -164,5 +190,6 @@ document.addEventListener("DOMContentLoaded", async function(){
   };
 });
 </script>
+<a class="chat-fab" href="chat.html" data-chat-fab style="display:none" aria-label="Abrir chat">💬</a>
 </body>
 </html>

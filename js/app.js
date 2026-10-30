@@ -139,7 +139,8 @@
       var shown = false;
       function show(){
         if (shown) return; shown = true;
-        banner.style.display = "block";
+        if (banner.classList.contains("group-overlay")) banner.classList.add("open");
+        else banner.style.display = "block";
         var link = banner.querySelector("[data-group-link]");
         if (link && s && s.whatsapp_group_url) link.href = s.whatsapp_group_url;
       }
@@ -158,6 +159,14 @@
       btn.addEventListener("click", function(){
         var nav = btn.closest(".head").querySelector("nav");
         if (nav) nav.classList.toggle("open");
+      });
+    });
+    // Group overlay close button, and the delicate chat icon in the
+    // bottom corner, shown only after the visitor has an account.
+    document.querySelectorAll("[data-close-group]").forEach(function(btn){
+      btn.addEventListener("click", function(){
+        var b = btn.closest(".group-overlay") || document.getElementById("group-banner");
+        if (b) { b.classList.remove("open"); b.style.display = "none"; }
       });
     });
     document.querySelectorAll(".head nav a").forEach(function(a){
@@ -185,7 +194,8 @@
         a.textContent = "Conta";
         a.href = "conta.html";
       });
-      if (session) {
+      if (session && location.pathname.indexOf("chat.html") === -1) {
+        document.querySelectorAll("[data-chat-fab]").forEach(function(a){ a.style.display = "flex"; });
         var adminEmail = (cfg.ADMIN_EMAIL || "").toLowerCase();
         var isAdmin = adminEmail && adminEmail !== "admin_email_por_definir" && session.user.email.toLowerCase() === adminEmail;
         if (!isAdmin && sb) {

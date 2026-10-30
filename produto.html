@@ -14,7 +14,7 @@
 <body>
 <header>
   <div class="head">
-    <button class="menu-btn" type="button" aria-label="Abrir menu">☰</button>
+    <button class="menu-btn" type="button" aria-label="Abrir menu">⋮</button>
     <nav><a href="index.html">Início</a><a href="colecao.html">Coleção</a><a href="carrinho.html">Carrinho (<span class="cart-count">0</span>)</a><a href="conta.html" data-account-link>Conta</a><a href="chat.html" data-chat-link>Chat</a><a href="admin.html" data-admin-link style="display:none">Admin</a></nav>
     <a class="brand" href="index.html"><img class="logo site-logo" src="images/celine-logo.png" alt="Logótipo CELINE"><span class="wordmark">CELINE</span></a>
     <a class="cta" href="colecao.html">Ver coleção</a>
@@ -52,10 +52,22 @@ document.addEventListener("DOMContentLoaded", async function(){
     '<div class="qty"><button id="minus" type="button">−</button><span id="qty">1</span><button id="plus" type="button">+</button></div>' +
     '<div class="actions"><button class="btn-outline" id="add" type="button">Adicionar ao carrinho</button>' +
     '<button class="btn" id="buy" type="button">Comprar</button>' +
-    '<a href="colecao.html">Voltar à coleção</a></div></div>';
+    '<a href="colecao.html">Voltar à coleção</a></div>' +
+    '<div style="margin-top:20px"><button class="btn-outline" id="how-receive" type="button">Como recebes a peça</button></div>' +
+    '<div class="overlay" id="receive-box"><div class="overlay-panel"><button class="overlay-close" id="receive-close" type="button" aria-label="Fechar">×</button>' +
+    '<h3 style="font-weight:400;margin-top:0">Como recebes a peça</h3>' +
+    '<table class="mini-table">' +
+    '<tr><td>O que recebes</td><td>' + p.name + ', exatamente como está na foto.</td></tr>' +
+    '<tr><td>Como recebes</td><td>Entrega em Maputo ou levantamento na loja em Maputo.</td></tr>' +
+    '<tr><td>Quando recebes</td><td>Em 1 a 3 dias úteis, depois do pagamento confirmado.</td></tr>' +
+    '<tr><td>Fora de Maputo</td><td>Fala connosco no chat antes de pagar, para confirmar o prazo.</td></tr></table>' +
+    '<a class="btn" href="chat.html">Falar no chat</a></div></div></div>';
   var qty = 1, qEl = document.getElementById("qty");
   document.getElementById("minus").onclick = function(){ if (qty > 1) { qty--; qEl.textContent = qty; } };
   document.getElementById("plus").onclick = function(){ qty++; qEl.textContent = qty; };
+  document.getElementById("how-receive").onclick = function(){ document.getElementById("receive-box").classList.add("open"); };
+  document.getElementById("receive-close").onclick = function(){ document.getElementById("receive-box").classList.remove("open"); };
+  document.getElementById("receive-box").addEventListener("click", function(e){ if (e.target === this) this.classList.remove("open"); });
   if (outOfStock) {
     document.getElementById("add").disabled = true; document.getElementById("add").textContent = "Esgotado";
     document.getElementById("buy").disabled = true; document.getElementById("buy").textContent = "Esgotado";
@@ -64,5 +76,6 @@ document.addEventListener("DOMContentLoaded", async function(){
   document.getElementById("buy").onclick = async function(){ if (outOfStock) return; var ok = await window.celine.requireAccountForCart(p.id, qty); if (ok) location.href = "carrinho.html"; };
 });
 </script>
+<a class="chat-fab" href="chat.html" data-chat-fab style="display:none" aria-label="Abrir chat">💬</a>
 </body>
 </html>

@@ -15,7 +15,7 @@
 <body>
 <header>
   <div class="head">
-    <button class="menu-btn" type="button" aria-label="Abrir menu">☰</button>
+    <button class="menu-btn" type="button" aria-label="Abrir menu">⋮</button>
     <nav><a href="index.html">Início</a><a href="colecao.html">Coleção</a><a href="carrinho.html">Carrinho (<span class="cart-count">0</span>)</a><a href="conta.html" data-account-link>Conta</a><a href="chat.html" data-chat-link>Chat</a><a href="admin.html" data-admin-link style="display:none">Admin</a></nav>
     <a class="brand" href="index.html"><img class="logo site-logo" src="images/celine-logo.png" alt="Logótipo CELINE"><span class="wordmark">CELINE</span></a>
     <a class="cta" href="colecao.html">Ver coleção</a>
@@ -73,10 +73,18 @@
     <h2>Loja física e online</h2>
     <p class="sub" data-store-text>A CELINE está em Maputo, na loja física e online, em alguns pontos da cidade.</p>
   </section>
-  <div class="group-banner" id="group-banner">
-    <h2 style="font-weight:400">O grupo da CELINE</h2>
-    <p>Entre no grupo para receber as novidades em primeira mão e cupons de desconto.</p>
-    <p><a class="btn" data-group-link href="https://chat.whatsapp.com/CELINEGrupo">Entrar no grupo</a></p>
+  <div class="overlay group-overlay" id="group-banner">
+    <div class="overlay-panel">
+      <button class="overlay-close" data-close-group type="button" aria-label="Fechar">×</button>
+      <h2 style="font-weight:400;margin-top:0">O grupo da CELINE</h2>
+      <p>Entra no grupo para ver as coleções novas.</p>
+      <table class="mini-table">
+        <tr><td>Coleções novas</td><td>Vês as peças novas primeiro, no grupo.</td></tr>
+        <tr><td>Novidades</td><td>Recebes as novidades em primeira mão.</td></tr>
+        <tr><td>Cupons</td><td>Descontos só para quem está no grupo.</td></tr>
+      </table>
+      <p><a class="btn" data-group-link href="https://chat.whatsapp.com/CELINEGrupo">Entrar no grupo</a></p>
+    </div>
   </div>
   <section class="order" style="padding:56px 24px">
     <h2>Como comprar</h2>
@@ -111,5 +119,6 @@ document.addEventListener("DOMContentLoaded", function(){
   });
 });
 </script>
+<a class="chat-fab" href="chat.html" data-chat-fab style="display:none" aria-label="Abrir chat">💬</a>
 </body>
 </html>
