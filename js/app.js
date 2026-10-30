@@ -120,6 +120,7 @@
       var trustText = document.querySelector("[data-trust-text]");
       if (trustText && s.trust_text) trustText.textContent = s.trust_text;
       document.querySelectorAll("[data-group-link]").forEach(function(a){ if (s.whatsapp_group_url) a.href = s.whatsapp_group_url; });
+      document.querySelectorAll("[data-whatsapp-link]").forEach(function(a){ if (s.whatsapp_url) a.href = s.whatsapp_url; });
       return s;
     },
     // ---- group banner: after a long time on the site, or on scroll ----

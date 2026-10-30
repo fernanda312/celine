@@ -27,19 +27,27 @@
   <p>© 2026 CELINE</p>
 </footer>
 <script>
-document.addEventListener("DOMContentLoaded", function(){
+document.addEventListener("DOMContentLoaded", async function(){
   var id = new URLSearchParams(location.search).get("id");
   var p = productById(id);
+  // Stock from the database (admin > Produtos). Null = no stock control.
+  var stock = null;
+  if (window.celine.configured) {
+    var r = await window.celine.supabase.from("products").select("stock_qty").eq("slug", id).maybeSingle();
+    if (r.data) stock = r.data.stock_qty;
+  }
   var el = document.getElementById("detail");
   if (!p) { el.innerHTML = '<div><h1>Peça não encontrada</h1><p>Volte à coleção e escolha outra peça.</p><a class="btn" href="colecao.html">Ver a coleção</a></div>'; return; }
   document.title = "CELINE — " + p.name;
   var priceHtml = p.price ? '<p class="price">' + fmtMT(p.price) + '</p>' : '<p class="price">Preço a confirmar</p>';
   var label = (p.id === "p09" || p.id === "n01" || p.id === "n15" || p.id === "n16") ? "conjunto" : "brinco";
   var unpricedNote = p.price ? "" : '<p>Esta peça ainda não tem preço na loja. Adicione ao carrinho e fale connosco no chat para confirmar o preço antes de pagar — peças sem preço não podem ser pagas online.</p>';
+  var stockNote = (stock === null) ? "" : (stock === 0 ? '<p><strong>Esgotado.</strong> Fale connosco no chat para saber quando volta.</p>' : '<p>Em stock: ' + stock + ' unidade(s).</p>');
+  var outOfStock = stock === 0;
   el.innerHTML =
     '<figure style="margin:0"><img src="' + p.img + '" alt="' + p.name + '"></figure>' +
     '<div><h1>' + p.name + '</h1><p class="cat">' + p.cat + '</p>' + priceHtml +
-    '<p>' + p.desc + '</p>' + unpricedNote +
+    '<p>' + p.desc + '</p>' + unpricedNote + stockNote +
     '<div class="qty"><button id="minus" type="button">−</button><span id="qty">1</span><button id="plus" type="button">+</button></div>' +
     '<div class="actions"><button class="btn-outline" id="add" type="button">Adicionar ao carrinho</button>' +
     '<button class="btn" id="buy" type="button">Comprar</button>' +
@@ -47,8 +55,12 @@ document.addEventListener("DOMContentLoaded", function(){
   var qty = 1, qEl = document.getElementById("qty");
   document.getElementById("minus").onclick = function(){ if (qty > 1) { qty--; qEl.textContent = qty; } };
   document.getElementById("plus").onclick = function(){ qty++; qEl.textContent = qty; };
-  document.getElementById("add").onclick = async function(e){ var ok = await window.celine.requireAccountForCart(p.id, qty); if (ok) e.target.textContent = "Adicionado ao carrinho ✓"; };
-  document.getElementById("buy").onclick = async function(){ var ok = await window.celine.requireAccountForCart(p.id, qty); if (ok) location.href = "carrinho.html"; };
+  if (outOfStock) {
+    document.getElementById("add").disabled = true; document.getElementById("add").textContent = "Esgotado";
+    document.getElementById("buy").disabled = true; document.getElementById("buy").textContent = "Esgotado";
+  }
+  document.getElementById("add").onclick = async function(e){ if (outOfStock) return; var ok = await window.celine.requireAccountForCart(p.id, qty); if (ok) e.target.textContent = "Adicionado ao carrinho ✓"; };
+  document.getElementById("buy").onclick = async function(){ if (outOfStock) return; var ok = await window.celine.requireAccountForCart(p.id, qty); if (ok) location.href = "carrinho.html"; };
 });
 </script>
 </body>

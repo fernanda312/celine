@@ -43,6 +43,7 @@
       </div>
       <div id="pay-error" class="msg err" style="display:none"></div>
       <p id="pay-done" style="display:none;color:#666;line-height:1.7"></p>
+      <div id="pay-chat-link" style="display:none;margin-top:16px"><a class="btn" href="chat.html">Ir para o chat</a></div>
     </div>
   </div>
 </main>
@@ -123,11 +124,25 @@ document.addEventListener("DOMContentLoaded", function(){
         var data = fn.data || {};
         if (data.error) throw new Error(data.error);
         document.getElementById("pay-done").style.display = "block";
+        document.getElementById("pay-chat-link").style.display = "block";
         document.getElementById("pay-done").textContent =
           "Pedido criado. Confirma o PIN no teu telemóvel. " +
-          "Acompanha o estado na conta e no chat.";
+          "Assim que o pagamento for confirmado, vais para o chat, onde cai o recibo.";
         window.celine.saveCart([]);
         render();
+        // As soon as the payment is confirmed (webhook marks the order
+        // paid), show success and go to the chat, where the receipt is.
+        var tries = 0;
+        var poll = setInterval(async function(){
+          tries++;
+          if (tries > 60) { clearInterval(poll); return; }
+          var st = await window.celine.supabase.from("orders").select("status").eq("id", order.id).maybeSingle();
+          if (st.data && st.data.status === "paid") {
+            clearInterval(poll);
+            document.getElementById("pay-done").textContent = "Pagamento confirmado! A abrir o chat com o teu recibo…";
+            setTimeout(function(){ location.href = "chat.html"; }, 1500);
+          }
+        }, 5000);
       } catch (e) {
         // Fallback error only: never marks the order as paid, never fakes it.
         err.style.display = "block";
