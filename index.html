@@ -80,6 +80,9 @@
   .videos figcaption{margin-top:18px}
   .videos h3{font-size:19px;font-weight:400;margin:0}
   .videos p{font-family:Arial,Helvetica,sans-serif;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#999999;margin:10px 0 0}
+  .card-actions{margin-top:18px;display:flex;flex-direction:column;gap:10px;align-items:center}
+  .btn-small{display:inline-block;background:linear-gradient(135deg,#7a1f2b 0%,#4a0d16 48%,#000000 100%);color:#ffffff;font-family:Arial,Helvetica,sans-serif;font-size:11px;letter-spacing:.18em;text-transform:uppercase;padding:11px 22px;border-radius:999px}
+  .btn-outline{background:#ffffff;border:1px solid #7a1f2b;color:#7a1f2b;font-family:Arial,Helvetica,sans-serif;font-size:11px;letter-spacing:.18em;text-transform:uppercase;padding:11px 22px;border-radius:999px;cursor:pointer}
   .order{max-width:640px;margin:0 auto;padding:96px 24px;text-align:center}
   .order h2{font-size:clamp(26px,3.5vw,38px);font-weight:400;margin:0}
   .order p{font-size:18px;line-height:1.7;color:#777777}
@@ -91,7 +94,7 @@
 <body>
 <header>
   <div class="head">
-    <nav><a href="#destaques">Destaques</a><a href="colecao.html" target="_blank" rel="noopener">Coleção</a><a href="#videos">Vídeos</a><a href="#loja">Loja</a></nav>
+    <nav><a href="#destaques">Destaques</a><a href="colecao.html" target="_blank" rel="noopener">Coleção</a><a href="#videos">Vídeos</a><a href="#loja">Loja</a><a href="carrinho.html">Carrinho (<span class="cart-count">0</span>)</a></nav>
     <a class="brand" href="#"><img class="logo" src="images/celine-logo.png" alt="Logótipo CELINE"><span class="wordmark">CELINE</span></a>
     <a class="cta" href="colecao.html" target="_blank" rel="noopener">Ver coleção</a>
   </div>
@@ -136,41 +139,19 @@
       <h2>A coleção</h2>
       <p class="sub">Cartões mais pequenos, com mais ar entre cada peça.</p>
       <div class="grid">
-        <figure class="card"><div class="frame"><img src="images/celine-13.jpg" alt="Argolas octogonais douradas"></div><figcaption><h3>Argolas octogonais</h3><p>Brincos</p></figcaption></figure>
-        <figure class="card"><div class="frame"><img src="images/celine-14.jpg" alt="Brincos dourados em flor"></div><figcaption><h3>Brincos flor</h3><p>Brincos</p></figcaption></figure>
-        <figure class="card"><div class="frame"><img src="images/celine-15.jpg" alt="Brincos disco borgonha com topo dourado"></div><figcaption><h3>Discos borgonha</h3><p>Brincos</p></figcaption></figure>
-        <figure class="card"><div class="frame"><img src="images/celine-16.jpg" alt="Argolas duplas torcidas douradas"></div><figcaption><h3>Argolas duplas torcidas</h3><p>Brincos</p></figcaption></figure>
-        <figure class="card"><div class="frame"><img src="images/celine-17.jpg" alt="Argolas hexagonais verde com argolas douradas"></div><figcaption><h3>Hexagonais verde</h3><p>Brincos</p></figcaption></figure>
-        <figure class="card"><div class="frame"><img src="images/celine-18.jpg" alt="Argolas douradas em contorno de flor"></div><figcaption><h3>Argolas flor</h3><p>Brincos</p></figcaption></figure>
-        <figure class="card"><div class="frame"><img src="images/celine-19.jpg" alt="Brincos quadrados azuis com detalhe dourado"></div><figcaption><h3>Quadrados azuis</h3><p>Brincos</p></figcaption></figure>
-        <figure class="card"><div class="frame"><img src="images/celine-20.jpg" alt="Argolas triângulo douradas"></div><figcaption><h3>Argolas triângulo</h3><p>Brincos</p></figcaption></figure>
-        <figure class="card"><div class="frame"><img src="images/celine-21.jpg" alt="Conjunto de bolas douradas: brincos e colar"></div><figcaption><h3>Conjunto bolas douradas</h3><p>Colar · Brincos</p></figcaption></figure>
-        <figure class="card"><div class="frame"><img src="images/celine-22.jpg" alt="Brincos longos com bola dourada e cristal"></div><figcaption><h3>Brincos longos bola</h3><p>Brincos</p></figcaption></figure>
+        <figure class="card"><div class="frame"><img src="images/celine-13.jpg" alt="Argolas octogonais douradas"></div><figcaption><h3>Argolas octogonais</h3><p>Brincos</p><div class="card-actions"><a class="btn-small" href="produto.html?id=p01" target="_blank" rel="noopener">Ver brinco</a><button class="btn-outline" data-add="p01">Adicionar ao carrinho</button></div></figcaption></figure>
+        <figure class="card"><div class="frame"><img src="images/celine-14.jpg" alt="Brincos dourados em flor"></div><figcaption><h3>Brincos flor</h3><p>Brincos</p><div class="card-actions"><a class="btn-small" href="produto.html?id=p02" target="_blank" rel="noopener">Ver brinco</a><button class="btn-outline" data-add="p02">Adicionar ao carrinho</button></div></figcaption></figure>
+        <figure class="card"><div class="frame"><img src="images/celine-15.jpg" alt="Brincos disco borgonha com topo dourado"></div><figcaption><h3>Discos borgonha</h3><p>Brincos</p><div class="card-actions"><a class="btn-small" href="produto.html?id=p03" target="_blank" rel="noopener">Ver brinco</a><button class="btn-outline" data-add="p03">Adicionar ao carrinho</button></div></figcaption></figure>
+        <figure class="card"><div class="frame"><img src="images/celine-16.jpg" alt="Argolas duplas torcidas douradas"></div><figcaption><h3>Argolas duplas torcidas</h3><p>Brincos</p><div class="card-actions"><a class="btn-small" href="produto.html?id=p04" target="_blank" rel="noopener">Ver brinco</a><button class="btn-outline" data-add="p04">Adicionar ao carrinho</button></div></figcaption></figure>
+        <figure class="card"><div class="frame"><img src="images/celine-17.jpg" alt="Argolas hexagonais verde com argolas douradas"></div><figcaption><h3>Hexagonais verde</h3><p>Brincos</p><div class="card-actions"><a class="btn-small" href="produto.html?id=p05" target="_blank" rel="noopener">Ver brinco</a><button class="btn-outline" data-add="p05">Adicionar ao carrinho</button></div></figcaption></figure>
+        <figure class="card"><div class="frame"><img src="images/celine-18.jpg" alt="Argolas douradas em contorno de flor"></div><figcaption><h3>Argolas flor</h3><p>Brincos</p><div class="card-actions"><a class="btn-small" href="produto.html?id=p06" target="_blank" rel="noopener">Ver brinco</a><button class="btn-outline" data-add="p06">Adicionar ao carrinho</button></div></figcaption></figure>
+        <figure class="card"><div class="frame"><img src="images/celine-19.jpg" alt="Brincos quadrados azuis com detalhe dourado"></div><figcaption><h3>Quadrados azuis</h3><p>Brincos</p><div class="card-actions"><a class="btn-small" href="produto.html?id=p07" target="_blank" rel="noopener">Ver brinco</a><button class="btn-outline" data-add="p07">Adicionar ao carrinho</button></div></figcaption></figure>
+        <figure class="card"><div class="frame"><img src="images/celine-20.jpg" alt="Argolas triângulo douradas"></div><figcaption><h3>Argolas triângulo</h3><p>Brincos</p><div class="card-actions"><a class="btn-small" href="produto.html?id=p08" target="_blank" rel="noopener">Ver brinco</a><button class="btn-outline" data-add="p08">Adicionar ao carrinho</button></div></figcaption></figure>
+        <figure class="card"><div class="frame"><img src="images/celine-21.jpg" alt="Conjunto de bolas douradas: brincos e colar"></div><figcaption><h3>Conjunto bolas douradas</h3><p>Colar · Brincos</p><div class="card-actions"><a class="btn-small" href="produto.html?id=p09" target="_blank" rel="noopener">Ver conjunto</a><button class="btn-outline" data-add="p09">Adicionar ao carrinho</button></div></figcaption></figure>
+        <figure class="card"><div class="frame"><img src="images/celine-22.jpg" alt="Brincos longos com bola dourada e cristal"></div><figcaption><h3>Brincos longos bola</h3><p>Brincos</p><div class="card-actions"><a class="btn-small" href="produto.html?id=p10" target="_blank" rel="noopener">Ver brinco</a><button class="btn-outline" data-add="p10">Adicionar ao carrinho</button></div></figcaption></figure>
       </div>
 
-      <div class="newhead">
-        <div class="rule" style="margin-bottom:28px"></div>
-        <h2>Nova coleção</h2>
-        <p class="sub">As peças novas, com preço em MT em cada cartão.</p>
-        <p style="text-align:center;margin:0 0 48px"><a class="btn" href="colecao.html" target="_blank" rel="noopener">Abrir a coleção numa nova página</a></p>
-        <figure class="wide" style="max-width:480px;margin-top:0"><img src="images/celine-new-13.jpg" alt="Brincos dourados em gota sobre pedra, cartaz Eleve o seu estilo, descubra a nossa nova coleção"></figure>
-        <div class="grid" style="margin-top:64px">
-          <figure class="card"><div class="frame"><img src="images/celine-new-01.jpg" alt="Conjunto completo em manequim: brincos, colar, pulseira e anel dourados"></div><figcaption><h3>Conjunto completo</h3><p>Brincos · Colar · Pulseira · Anel</p><p class="price">3.500 MT</p></figcaption></figure>
-          <figure class="card"><div class="frame"><img src="images/celine-new-02.jpg" alt="Argolas duplas em acrílico transparente com topo dourado"></div><figcaption><h3>Argolas acrílico</h3><p>Brincos</p><p class="price">1.200 MT</p></figcaption></figure>
-          <figure class="card"><div class="frame"><img src="images/celine-new-03.jpg" alt="Brincos retangulares verde mármore com risca dourada"></div><figcaption><h3>Retangulares verde mármore</h3><p>Brincos</p><p class="price">1.450 MT</p></figcaption></figure>
-          <figure class="card"><div class="frame"><img src="images/celine-new-04.jpg" alt="Brincos redondos verdes com brilho dourado"></div><figcaption><h3>Redondos verde com brilho</h3><p>Brincos</p><p class="price">950 MT</p></figcaption></figure>
-          <figure class="card"><div class="frame"><img src="images/celine-new-05.jpg" alt="Brincos em folha tartaruga com topo turquesa"></div><figcaption><h3>Folha tartaruga</h3><p>Brincos</p><p class="price">1.350 MT</p></figcaption></figure>
-          <figure class="card"><div class="frame"><img src="images/celine-new-06.jpg" alt="Brincos gota verde-menta com dourado"></div><figcaption><h3>Gota verde-menta</h3><p>Brincos</p><p class="price">1.100 MT</p></figcaption></figure>
-          <figure class="card"><div class="frame"><img src="images/celine-new-07.jpg" alt="Brincos semicírculo aqua com topo dourado"></div><figcaption><h3>Semicírculo aqua</h3><p>Brincos</p><p class="price">1.250 MT</p></figcaption></figure>
-          <figure class="card"><div class="frame"><img src="images/celine-new-08.jpg" alt="Brincos brancos com bolas douradas"></div><figcaption><h3>Brancos com dourado</h3><p>Brincos</p><p class="price">1.600 MT</p></figcaption></figure>
-          <figure class="card"><div class="frame"><img src="images/celine-new-09.jpg" alt="Brincos disco transparente com flocos prateados e topo verde"></div><figcaption><h3>Disco transparente</h3><p>Brincos</p><p class="price">1.050 MT</p></figcaption></figure>
-          <figure class="card"><div class="frame"><img src="images/celine-new-10.jpg" alt="Argolas verde mármore com topo dourado"></div><figcaption><h3>Argolas verde mármore</h3><p>Brincos</p><p class="price">1.300 MT</p></figcaption></figure>
-          <figure class="card"><div class="frame"><img src="images/celine-new-11.jpg" alt="Brincos disco dourado com pedra turquesa"></div><figcaption><h3>Disco dourado com turquesa</h3><p>Brincos</p><p class="price">1.750 MT</p></figcaption></figure>
-          <figure class="card"><div class="frame"><img src="images/celine-new-12.jpg" alt="Brincos pretos com pérola cinzenta"></div><figcaption><h3>Pretos com pérola</h3><p>Brincos</p><p class="price">1.400 MT</p></figcaption></figure>
-          <figure class="card"><div class="frame"><img src="images/celine-new-15.jpg" alt="Conjunto em manequim com colar, pulseira e brincos em rubi e diamantes"></div><figcaption><h3>Conjunto rubi</h3><p>Colar · Pulseira · Brincos</p><p class="price">4.800 MT</p></figcaption></figure>
-          <figure class="card"><div class="frame"><img src="images/celine-new-16.jpg" alt="Conjunto em manequim com colar, pulseira e brincos em gota dourada"></div><figcaption><h3>Conjunto gota dourada</h3><p>Colar · Pulseira · Brincos</p><p class="price">2.900 MT</p></figcaption></figure>
-        </div>
-      </div>
+      
     </div>
   </section>
 
@@ -209,5 +190,6 @@
   <p>Bijuteria de luxo · Brincos · Pulseiras · Anéis · Colares</p>
   <p>© 2026 CELINE</p>
 </footer>
+<script src="js/produtos.js"></script>
 </body>
 </html>
