@@ -152,6 +152,20 @@
     }
   };
   document.addEventListener("DOMContentLoaded", function(){
+    // Mobile menu button: the nav is hidden on small screens, so this
+    // button is the only way to reach Chat, Conta and Carrinho there.
+    document.querySelectorAll(".menu-btn").forEach(function(btn){
+      btn.addEventListener("click", function(){
+        var nav = btn.closest(".head").querySelector("nav");
+        if (nav) nav.classList.toggle("open");
+      });
+    });
+    document.querySelectorAll(".head nav a").forEach(function(a){
+      a.addEventListener("click", function(){
+        var nav = a.closest("nav");
+        if (nav) nav.classList.remove("open");
+      });
+    });
     window.celine.updateCartCount();
     window.celine.applySettings();
     window.celine.initGroupBanner();

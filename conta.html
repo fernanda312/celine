@@ -14,6 +14,7 @@
 <body>
 <header>
   <div class="head">
+    <button class="menu-btn" type="button" aria-label="Abrir menu">☰ Menu</button>
     <nav><a href="index.html">Início</a><a href="colecao.html">Coleção</a><a href="carrinho.html">Carrinho (<span class="cart-count">0</span>)</a><a href="conta.html" data-account-link>Conta</a><a href="chat.html" data-chat-link>Chat</a><a href="admin.html" data-admin-link style="display:none">Admin</a></nav>
     <a class="brand" href="index.html"><img class="logo site-logo" src="images/celine-logo.png" alt="Logótipo CELINE"><span class="wordmark">CELINE</span></a>
     <a class="cta" href="colecao.html">Ver coleção</a>
@@ -35,7 +36,7 @@
     <div class="msg" id="auth-msg" style="display:none"></div>
   </div>
   <div class="form" id="account-box" style="display:none">
-    <h1>A minha conta</h1>
+    <h1>O meu perfil</h1>
     <p style="color:#666;line-height:1.7">Conta ativa.</p>
     <p id="account-email"></p>
     <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:16px">
@@ -43,7 +44,8 @@
       <a class="btn-outline" href="carrinho.html">Ver o carrinho</a>
       <button class="btn-outline" id="btn-signout" type="button">Sair</button>
     </div>
-    <h2 style="font-weight:400;margin-top:40px">As minhas encomendas</h2>
+    <h2 style="font-weight:400;margin-top:40px">Histórico de compras</h2>
+    <p style="color:#666;line-height:1.6">Aqui vês o que compraste, o que já está pago e o recibo no chat.</p>
     <div id="my-orders"><p>A carregar…</p></div>
   </div>
 </main>
@@ -90,8 +92,15 @@ document.addEventListener("DOMContentLoaded", async function(){
     if (r.error) { box.innerHTML = "<p>Não foi possível carregar as encomendas.</p>"; }
     else if (!r.data.length) { box.innerHTML = "<p>Ainda não tem encomendas.</p>"; }
     else {
+      var statusPt = {"pending_payment": "A aguardar pagamento", "paid": "Pago", "preparing": "A preparar", "delivered": "Entregue", "cancelled": "Cancelado"};
+      var items = await window.celine.supabase.from("order_items").select("order_id, name, qty").in("order_id", r.data.map(function(o){ return o.id; }));
+      var byOrder = {}; (items.data || []).forEach(function(i){ (byOrder[i.order_id] = byOrder[i.order_id] || []).push(i); });
       box.innerHTML = r.data.map(function(o){
-        return "<p>Encomenda " + o.id.slice(0, 8) + " — " + (o.total_mt ? fmtMT(o.total_mt) : "a confirmar") + " — " + o.status + "</p>";
+        var bought = (byOrder[o.id] || []).map(function(i){ return i.name + " × " + i.qty; }).join(", ") || "—";
+        var receipt = (o.status === "paid" || o.status === "preparing" || o.status === "delivered")
+          ? "<br>Recibo: " + (o.total_mt ? fmtMT(o.total_mt) : "—") + ", pago por M-Pesa. <a href='chat.html'>Ver recibo no chat</a>"
+          : "";
+        return "<p style='border-bottom:1px solid #eee;padding:12px 0'>Encomenda " + o.id.slice(0, 8) + " — " + (statusPt[o.status] || o.status) + "<br>" + bought + "<br>" + (o.total_mt ? fmtMT(o.total_mt) : "a confirmar") + receipt + "</p>";
       }).join("");
     }
     document.getElementById("btn-signout").onclick = function(){ window.celine.signOut(); };
