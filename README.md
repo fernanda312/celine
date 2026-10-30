@@ -19,3 +19,8 @@ Site construído a partir do desenho do export giellygreen.co.uk, com as imagens
 - Destaques: +1 foto com pessoa (colar de diamantes, new-14), em grande.
 - Loja: secção "Loja física e online" em Maputo, em alguns pontos da cidade — sem moradas inventadas; moradas exatas por dar pela dona.
 - Imagens novas 16, sem duplicados; duas delas trazem texto/marca próprios na foto (sorbet accessory, EVERSTYLISH) e foram mantidas como enviadas, sem apagar nada.
+
+## Atualização 2026-10-30 — coleção em página própria
+- colecao.html: página própria da coleção, a começar pela Nova coleção (cartaz + 14 cartões com preços em MT), seguida da coleção original (10 cartões).
+- Todos os botões "Ver coleção" / "Ver a coleção" abrem colecao.html numa nova página (target _blank), incluindo o botão novo dentro da secção Nova coleção na página inicial, a partir da captura enviada pela dona.
+- A página inicial mantém a sua secção de coleção como pré-visualização; a página própria é a coleção completa.
