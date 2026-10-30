@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CELINE — Chat</title>
+<link rel="icon" href="images/celine-logo.png">
+<link rel="stylesheet" href="css/style.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/config.js"></script>
+<script src="js/catalog.js"></script>
+<script src="js/app.js"></script>
+</head>
+<body>
+<header>
+  <div class="head">
+    <nav><a href="index.html">Início</a><a href="colecao.html">Coleção</a><a href="carrinho.html">Carrinho (<span class="cart-count">0</span>)</a><a href="conta.html" data-account-link>Conta</a></nav>
+    <a class="brand" href="index.html"><img class="logo site-logo" src="images/celine-logo.png" alt="Logótipo CELINE"><span class="wordmark">CELINE</span></a>
+    <a class="cta" href="colecao.html">Ver coleção</a>
+  </div>
+</header>
+<main>
+  <div class="chatpage">
+    <div class="chathead">
+      <img class="site-logo" src="images/celine-logo.png" alt="Logótipo CELINE">
+      <div><h1>CELINE</h1><p>Chat da loja</p></div>
+    </div>
+    <div class="group-banner" id="group-banner" style="max-width:100%">
+      <p>Entre no grupo para receber as novidades em primeira mão e cupons de desconto.</p>
+      <p><a class="btn" data-group-link href="https://chat.whatsapp.com/CELINEGrupo">Entrar no grupo</a></p>
+    </div>
+    <div class="chatlog" id="chatlog"><p style="color:#777">A carregar a conversa…</p></div>
+    <form class="chatbox" id="chatform">
+      <input type="text" id="chat-text" placeholder="Escreva a sua mensagem…" autocomplete="off">
+      <input type="file" id="chat-file" accept="image/*,audio/*,application/pdf" style="max-width:220px">
+      <button class="btn" type="submit">Enviar</button>
+      <button class="btn-outline" id="audio-btn" type="button">Gravar áudio</button>
+    </form>
+    <p style="color:#777;line-height:1.6">Anexos até 5 MB. O chat só abre depois da conta, para a conversa ficar guardada na sua conta.</p>
+    <div class="msg" id="chat-msg" style="display:none"></div>
+  </div>
+</main>
+<footer>
+  <img class="footlogo site-logo" src="images/celine-logo.png" alt="Logótipo CELINE">
+  <div class="wm">CELINE</div>
+  <p>Bijuteria de luxo · Brincos · Pulseiras · Anéis · Colares</p>
+  <p>© 2026 CELINE</p>
+</footer>
+<script>
+document.addEventListener("DOMContentLoaded", async function(){
+  var log = document.getElementById("chatlog"), msg = document.getElementById("chat-msg");
+  // Chat only after account: intent → account → chat, no step is lost.
+  if (!window.celine.configured) { log.innerHTML = "<p>O chat ainda está a ser ligado pela loja.</p>"; return; }
+  var session = await window.celine.getSession();
+  if (!session) {
+    window.celine.savePending("chat", "chat.html");
+    location.href = "conta.html";
+    return;
+  }
+  document.getElementById("group-banner").style.display = "block";
+  var convId = null;
+  async function ensureConversation(){
+    var r = await window.celine.supabase.from("conversations").select("id").eq("user_id", session.user.id).order("created_at", {ascending: false}).limit(1).maybeSingle();
+    if (r.data) return r.data.id;
+    var c = await window.celine.supabase.from("conversations").insert({user_id: session.user.id}).select().single();
+    return c.data ? c.data.id : null;
+  }
+  function timeOf(ts){
+    var d = new Date(ts);
+    return d.toLocaleTimeString("pt-PT", {hour: "2-digit", minute: "2-digit"});
+  }
+  async function loadMessages(){
+    if (!convId) return;
+    var r = await window.celine.supabase.from("messages").select("*").eq("conversation_id", convId).order("created_at", {ascending: true});
+    if (r.error) { log.innerHTML = "<p>Não foi possível carregar a conversa.</p>"; return; }
+    if (!r.data.length) { log.innerHTML = "<p style='color:#777'>Olá! Escreva a sua mensagem — a CELINE responde aqui.</p>"; return; }
+    log.innerHTML = r.data.map(function(m){
+      var mine = m.sender === "customer";
+      var body = "";
+      if (m.file_url) {
+        if (/\.(jpg|jpeg|png|webp|gif)$/i.test(m.file_url)) body = '<img src="' + m.file_url + '" alt="Anexo">';
+        else if (/\.(mp3|wav|webm|ogg|m4a)$/i.test(m.file_url)) body = '<audio controls src="' + m.file_url + '" style="width:280px"></audio>';
+        else body = '<a href="' + m.file_url + '" target="_blank" rel="noopener">Abrir anexo</a>';
+      } else { body = m.body ? m.body.replace(/</g, "&lt;") : ""; }
+      return '<div class="bubble ' + (mine ? "mine" : "theirs") + '">' + body + "<small>" + timeOf(m.created_at) + "</small></div>";
+    }).join("");
+    log.scrollTop = log.scrollHeight;
+  }
+  convId = await ensureConversation();
+  await loadMessages();
+  setInterval(loadMessages, 5000);
+  document.getElementById("chatform").addEventListener("submit", async function(e){
+    e.preventDefault();
+    var text = document.getElementById("chat-text").value.trim();
+    var file = document.getElementById("chat-file").files[0];
+    if (!text && !file) return;
+    var fileUrl = null;
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) { msg.style.display = "block"; msg.className = "msg err"; msg.textContent = "O anexo não pode passar de 5 MB."; return; }
+      var path = session.user.id + "/" + Date.now() + "-" + file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
+      var up = await window.celine.supabase.storage.from("chat-attachments").upload(path, file);
+      if (up.error) { msg.style.display = "block"; msg.className = "msg err"; msg.textContent = "Não foi possível enviar o anexo: " + up.error.message; return; }
+      var pub = window.celine.supabase.storage.from("chat-attachments").getPublicUrl(path);
+      fileUrl = pub.data.publicUrl;
+    }
+    var ins = await window.celine.supabase.from("messages").insert({conversation_id: convId, sender: "customer", body: text || null, file_url: fileUrl});
+    if (ins.error) { msg.style.display = "block"; msg.className = "msg err"; msg.textContent = ins.error.message; return; }
+    document.getElementById("chat-text").value = "";
+    document.getElementById("chat-file").value = "";
+    await loadMessages();
+  });
+  // Audio: MediaRecorder, fixed-width player in the bubble (see CSS).
+  var recorder = null, chunks = [];
+  var audioBtn = document.getElementById("audio-btn");
+  audioBtn.onclick = async function(){
+    if (recorder) {
+      recorder.stop();
+      audioBtn.textContent = "Gravar áudio";
+      recorder = null;
+      return;
+    }
+    try {
+      var stream = await navigator.mediaDevices.getUserMedia({audio: true});
+      recorder = new MediaRecorder(stream); chunks = [];
+      recorder.ondataavailable = function(e){ if (e.data.size) chunks.push(e.data); };
+      recorder.onstop = async function(){
+        var blob = new Blob(chunks, {type: "audio/webm"});
+        if (blob.size > 5 * 1024 * 1024) { msg.style.display = "block"; msg.className = "msg err"; msg.textContent = "O áudio não pode passar de 5 MB."; return; }
+        var path = session.user.id + "/" + Date.now() + "-audio.webm";
+        var up = await window.celine.supabase.storage.from("chat-attachments").upload(path, blob);
+        if (up.error) { msg.style.display = "block"; msg.className = "msg err"; msg.textContent = up.error.message; return; }
+        var pub = window.celine.supabase.storage.from("chat-attachments").getPublicUrl(path);
+        await window.celine.supabase.from("messages").insert({conversation_id: convId, sender: "customer", body: null, file_url: pub.data.publicUrl});
+        await loadMessages();
+      };
+      recorder.start();
+      audioBtn.textContent = "Parar gravação";
+    } catch (e) {
+      msg.style.display = "block"; msg.className = "msg err"; msg.textContent = "Não foi possível aceder ao microfone.";
+    }
+  };
+});
+</script>
+</body>
+</html>

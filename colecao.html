@@ -6,96 +6,17 @@
 <title>CELINE — A coleção</title>
 <meta name="description" content="CELINE — A coleção completa. Nova coleção com preços em MT e coleção original.">
 <link rel="icon" href="images/celine-logo.png">
-<style>
-  *{box-sizing:border-box}
-  html{scroll-behavior:smooth}
-  body{margin:0;background:#ffffff;color:#1c1a18;font-family:Georgia,'Times New Roman',serif;-webkit-font-smoothing:antialiased}
-  a{color:inherit;text-decoration:none}
-  img{display:block;width:100%;height:auto}
-  /* Header: same rhythm as the reference — left menu, centre wordmark, right link.
-     Sticky with a solid background, so nothing ever slides underneath it. */
-  header{position:sticky;top:0;z-index:10;background:#ffffff;border-bottom:1px solid #eeeeee}
-  .head{max-width:1240px;margin:0 auto;padding:18px 28px;display:flex;align-items:center;justify-content:space-between;gap:20px}
-  .head nav{display:flex;gap:26px;font-family:Arial,Helvetica,sans-serif;font-size:12px;letter-spacing:.18em;text-transform:uppercase}
-  .head nav a{padding:6px 0;border-bottom:1px solid transparent}
-  .head nav a:hover{border-bottom-color:#7a1f2b}
-  .wordmark{font-size:30px;letter-spacing:.42em;text-indent:.42em;font-weight:400}
-  .btn{display:inline-block;background:linear-gradient(135deg,#7a1f2b 0%,#4a0d16 48%,#000000 100%);color:#ffffff;font-family:Arial,Helvetica,sans-serif;font-size:12px;letter-spacing:.22em;text-transform:uppercase;padding:15px 36px;border-radius:999px}
-  .btn:hover{opacity:.92}
-  .brand{display:flex;align-items:center;gap:14px}
-  .brand img.logo{width:auto;height:46px}
-  .footlogo{width:auto;height:130px;margin:0 auto 18px}
-  .head .cta{font-family:Arial,Helvetica,sans-serif;font-size:12px;letter-spacing:.18em;text-transform:uppercase;background:linear-gradient(135deg,#7a1f2b 0%,#4a0d16 48%,#000000 100%);color:#ffffff;padding:12px 22px;border-radius:999px}
-  .head .cta:hover{opacity:.92}
-  @media(max-width:700px){
-    .head{padding:14px 18px}
-    .head nav{display:none}
-    .wordmark{font-size:24px}
-    .head .cta{padding:8px 12px;font-size:11px}
-  }
-  /* Hero: image 1, whole, never cropped, never zoomed. No text over the face. */
-  .hero{background:#ffffff;color:#1c1a18;text-align:center;padding:64px 20px 80px}
-  .hero .eyebrow{font-family:Arial,Helvetica,sans-serif;font-size:11px;letter-spacing:.38em;text-transform:uppercase;color:#7a1f2b;margin:0 0 32px}
-  .hero figure{margin:0 auto;max-width:560px}
-  .hero img{width:100%;height:auto;border:1px solid #eeeeee}
-  .hero h1{font-size:clamp(44px,8vw,84px);letter-spacing:.32em;text-indent:.32em;font-weight:400;margin:44px 0 14px}
-  .hero .cats{font-family:Arial,Helvetica,sans-serif;font-size:12px;letter-spacing:.30em;text-transform:uppercase;color:#7a1f2b;margin:0}
-  .hero p{max-width:520px;margin:22px auto 0;font-size:19px;line-height:1.7;color:#666666}
-  .hero .btn{margin-top:32px}
-  /* Short intro, no decorative paragraphs */
-  .intro{max-width:760px;margin:0 auto;padding:88px 24px 16px;text-align:center}
-  .intro h2{font-size:clamp(28px,4vw,42px);font-weight:400;line-height:1.25;margin:0}
-  .intro p{font-size:18px;line-height:1.7;color:#666666;margin:20px 0 0}
-  .rule{width:56px;height:1px;background:#7a1f2b;margin:0 auto}
-  /* Destaques: every photo with a person, large — never a small card.
-     Images keep their own ratio (height:auto), so nothing is cropped or zoomed. */
-  .section{max-width:1240px;margin:0 auto;padding:88px 28px}
-  .section h2{font-size:clamp(26px,3.5vw,38px);font-weight:400;text-align:center;margin:0 0 12px}
-  .section .sub{text-align:center;color:#666666;font-size:17px;line-height:1.6;margin:0 0 56px}
-  .editorial{display:grid;grid-template-columns:1fr 1fr;gap:64px 56px;align-items:start}
-  @media(max-width:700px){.editorial{grid-template-columns:1fr;gap:56px}.section{padding:64px 20px}}
-  .editorial figure{margin:0}
-  .editorial figcaption{margin-top:18px;display:flex;justify-content:space-between;gap:16px;font-family:Arial,Helvetica,sans-serif;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#777777}
-  .editorial figcaption span:last-child{color:#7a1f2b;white-space:nowrap}
-  .wide{max-width:880px;margin:72px auto 0}
-  .wide figcaption{margin-top:18px;display:flex;justify-content:space-between;gap:16px;font-family:Arial,Helvetica,sans-serif;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#777777}
-  /* Coleção: cards deliberately SMALLER than the reference, with generous spacing.
-     Card max 300px, 48px between columns, 72px between rows. No hover zoom. */
-  .collection{background:#ffffff;border-top:1px solid #eeeeee;border-bottom:1px solid #eeeeee}
-  .grid{display:grid;grid-template-columns:repeat(3,300px);justify-content:center;gap:72px 48px}
-  @media(max-width:1060px){.grid{grid-template-columns:repeat(2,300px)}}
-  @media(max-width:700px){.grid{grid-template-columns:300px;gap:56px}}
-  .card{margin:0;text-align:center}
-  .card .frame{background:#ffffff;border:1px solid #eeeeee}
-  .card img{width:100%;height:auto}
-  .card figcaption{margin-top:18px}
-  .card h3{font-size:19px;font-weight:400;margin:0}
-  .card p{font-family:Arial,Helvetica,sans-serif;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#999999;margin:10px 0 0}
-  .card .price{font-family:Arial,Helvetica,sans-serif;font-size:15px;letter-spacing:.06em;text-transform:none;color:#7a1f2b;margin-top:10px}
-  .newhead{margin-top:88px}
-  .videos{display:grid;grid-template-columns:repeat(2,360px);justify-content:center;gap:64px 56px}
-  @media(max-width:820px){.videos{grid-template-columns:360px}}
-  .videos figure{margin:0;text-align:center}
-  .videos video{width:100%;height:auto;background:#ffffff;border:1px solid #eeeeee}
-  .videos figcaption{margin-top:18px}
-  .videos h3{font-size:19px;font-weight:400;margin:0}
-  .videos p{font-family:Arial,Helvetica,sans-serif;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#999999;margin:10px 0 0}
-  .card-actions{margin-top:18px;display:flex;flex-direction:column;gap:10px;align-items:center}
-  .btn-small{display:inline-block;background:linear-gradient(135deg,#7a1f2b 0%,#4a0d16 48%,#000000 100%);color:#ffffff;font-family:Arial,Helvetica,sans-serif;font-size:11px;letter-spacing:.18em;text-transform:uppercase;padding:11px 22px;border-radius:999px}
-  .btn-outline{background:#ffffff;border:1px solid #7a1f2b;color:#7a1f2b;font-family:Arial,Helvetica,sans-serif;font-size:11px;letter-spacing:.18em;text-transform:uppercase;padding:11px 22px;border-radius:999px;cursor:pointer}
-  .order{max-width:640px;margin:0 auto;padding:96px 24px;text-align:center}
-  .order h2{font-size:clamp(26px,3.5vw,38px);font-weight:400;margin:0}
-  .order p{font-size:18px;line-height:1.7;color:#777777}
-  footer{border-top:1px solid #eeeeee;padding:48px 24px;text-align:center}
-  footer .wm{font-size:22px;letter-spacing:.42em;text-indent:.42em}
-  footer p{font-family:Arial,Helvetica,sans-serif;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#999999}
-</style>
+<link rel="stylesheet" href="css/style.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/config.js"></script>
+<script src="js/catalog.js"></script>
+<script src="js/app.js"></script>
 </head>
 <body>
 <header>
   <div class="head">
-    <nav><a href="index.html">Início</a><a href="index.html#destaques">Destaques</a><a href="index.html#videos">Vídeos</a><a href="index.html#loja">Loja</a><a href="carrinho.html">Carrinho (<span class="cart-count">0</span>)</a></nav>
-    <a class="brand" href="index.html"><img class="logo" src="images/celine-logo.png" alt="Logótipo CELINE"><span class="wordmark">CELINE</span></a>
+    <nav><a href="index.html">Início</a><a href="index.html#destaques">Destaques</a><a href="index.html#videos">Vídeos</a><a href="index.html#loja">Loja</a><a href="carrinho.html">Carrinho (<span class="cart-count">0</span>)</a><a href="conta.html" data-account-link>Conta</a><a href="chat.html" data-chat-link>Chat</a></nav>
+    <a class="brand" href="index.html"><img class="logo site-logo" src="images/celine-logo.png" alt="Logótipo CELINE"><span class="wordmark">CELINE</span></a>
     <a class="cta" href="index.html">Voltar ao início</a>
   </div>
 </header>
@@ -104,54 +25,52 @@
     <div class="rule" style="margin-bottom:28px"></div>
     <h2>Nova coleção</h2>
     <p class="sub">As peças novas, com preço em MT em cada cartão.</p>
-    <figure class="wide" style="max-width:480px;margin-top:0"><img src="images/celine-new-13.jpg" alt="Brincos dourados em gota sobre pedra, cartaz Eleve o seu estilo, descubra a nossa nova coleção"></figure>
-    <div class="grid" style="margin-top:64px">
-          <figure class="card"><div class="frame"><img src="images/celine-new-01.jpg" alt="Conjunto completo em manequim: brincos, colar, pulseira e anel dourados"></div><figcaption><h3>Conjunto completo</h3><p>Brincos · Colar · Pulseira · Anel</p><p class="price">3.500 MT</p><div class="card-actions"><a class="btn-small" href="produto.html?id=n01" target="_blank" rel="noopener">Ver conjunto</a><button class="btn-outline" data-add="n01">Adicionar ao carrinho</button></div></figcaption></figure>
-          <figure class="card"><div class="frame"><img src="images/celine-new-02.jpg" alt="Argolas duplas em acrílico transparente com topo dourado"></div><figcaption><h3>Argolas acrílico</h3><p>Brincos</p><p class="price">1.200 MT</p><div class="card-actions"><a class="btn-small" href="produto.html?id=n02" target="_blank" rel="noopener">Ver brinco</a><button class="btn-outline" data-add="n02">Adicionar ao carrinho</button></div></figcaption></figure>
-          <figure class="card"><div class="frame"><img src="images/celine-new-03.jpg" alt="Brincos retangulares verde mármore com risca dourada"></div><figcaption><h3>Retangulares verde mármore</h3><p>Brincos</p><p class="price">1.450 MT</p><div class="card-actions"><a class="btn-small" href="produto.html?id=n03" target="_blank" rel="noopener">Ver brinco</a><button class="btn-outline" data-add="n03">Adicionar ao carrinho</button></div></figcaption></figure>
-          <figure class="card"><div class="frame"><img src="images/celine-new-04.jpg" alt="Brincos redondos verdes com brilho dourado"></div><figcaption><h3>Redondos verde com brilho</h3><p>Brincos</p><p class="price">950 MT</p><div class="card-actions"><a class="btn-small" href="produto.html?id=n04" target="_blank" rel="noopener">Ver brinco</a><button class="btn-outline" data-add="n04">Adicionar ao carrinho</button></div></figcaption></figure>
-          <figure class="card"><div class="frame"><img src="images/celine-new-05.jpg" alt="Brincos em folha tartaruga com topo turquesa"></div><figcaption><h3>Folha tartaruga</h3><p>Brincos</p><p class="price">1.350 MT</p><div class="card-actions"><a class="btn-small" href="produto.html?id=n05" target="_blank" rel="noopener">Ver brinco</a><button class="btn-outline" data-add="n05">Adicionar ao carrinho</button></div></figcaption></figure>
-          <figure class="card"><div class="frame"><img src="images/celine-new-06.jpg" alt="Brincos gota verde-menta com dourado"></div><figcaption><h3>Gota verde-menta</h3><p>Brincos</p><p class="price">1.100 MT</p><div class="card-actions"><a class="btn-small" href="produto.html?id=n06" target="_blank" rel="noopener">Ver brinco</a><button class="btn-outline" data-add="n06">Adicionar ao carrinho</button></div></figcaption></figure>
-          <figure class="card"><div class="frame"><img src="images/celine-new-07.jpg" alt="Brincos semicírculo aqua com topo dourado"></div><figcaption><h3>Semicírculo aqua</h3><p>Brincos</p><p class="price">1.250 MT</p><div class="card-actions"><a class="btn-small" href="produto.html?id=n07" target="_blank" rel="noopener">Ver brinco</a><button class="btn-outline" data-add="n07">Adicionar ao carrinho</button></div></figcaption></figure>
-          <figure class="card"><div class="frame"><img src="images/celine-new-08.jpg" alt="Brincos brancos com bolas douradas"></div><figcaption><h3>Brancos com dourado</h3><p>Brincos</p><p class="price">1.600 MT</p><div class="card-actions"><a class="btn-small" href="produto.html?id=n08" target="_blank" rel="noopener">Ver brinco</a><button class="btn-outline" data-add="n08">Adicionar ao carrinho</button></div></figcaption></figure>
-          <figure class="card"><div class="frame"><img src="images/celine-new-09.jpg" alt="Brincos disco transparente com flocos prateados e topo verde"></div><figcaption><h3>Disco transparente</h3><p>Brincos</p><p class="price">1.050 MT</p><div class="card-actions"><a class="btn-small" href="produto.html?id=n09" target="_blank" rel="noopener">Ver brinco</a><button class="btn-outline" data-add="n09">Adicionar ao carrinho</button></div></figcaption></figure>
-          <figure class="card"><div class="frame"><img src="images/celine-new-10.jpg" alt="Argolas verde mármore com topo dourado"></div><figcaption><h3>Argolas verde mármore</h3><p>Brincos</p><p class="price">1.300 MT</p><div class="card-actions"><a class="btn-small" href="produto.html?id=n10" target="_blank" rel="noopener">Ver brinco</a><button class="btn-outline" data-add="n10">Adicionar ao carrinho</button></div></figcaption></figure>
-          <figure class="card"><div class="frame"><img src="images/celine-new-11.jpg" alt="Brincos disco dourado com pedra turquesa"></div><figcaption><h3>Disco dourado com turquesa</h3><p>Brincos</p><p class="price">1.750 MT</p><div class="card-actions"><a class="btn-small" href="produto.html?id=n11" target="_blank" rel="noopener">Ver brinco</a><button class="btn-outline" data-add="n11">Adicionar ao carrinho</button></div></figcaption></figure>
-          <figure class="card"><div class="frame"><img src="images/celine-new-12.jpg" alt="Brincos pretos com pérola cinzenta"></div><figcaption><h3>Pretos com pérola</h3><p>Brincos</p><p class="price">1.400 MT</p><div class="card-actions"><a class="btn-small" href="produto.html?id=n12" target="_blank" rel="noopener">Ver brinco</a><button class="btn-outline" data-add="n12">Adicionar ao carrinho</button></div></figcaption></figure>
-          <figure class="card"><div class="frame"><img src="images/celine-new-15.jpg" alt="Conjunto em manequim com colar, pulseira e brincos em rubi e diamantes"></div><figcaption><h3>Conjunto rubi</h3><p>Colar · Pulseira · Brincos</p><p class="price">4.800 MT</p><div class="card-actions"><a class="btn-small" href="produto.html?id=n15" target="_blank" rel="noopener">Ver conjunto</a><button class="btn-outline" data-add="n15">Adicionar ao carrinho</button></div></figcaption></figure>
-          <figure class="card"><div class="frame"><img src="images/celine-new-16.jpg" alt="Conjunto em manequim com colar, pulseira e brincos em gota dourada"></div><figcaption><h3>Conjunto gota dourada</h3><p>Colar · Pulseira · Brincos</p><p class="price">2.900 MT</p><div class="card-actions"><a class="btn-small" href="produto.html?id=n16" target="_blank" rel="noopener">Ver conjunto</a><button class="btn-outline" data-add="n16">Adicionar ao carrinho</button></div></figcaption></figure>
-        </div>
+    <figure class="wide" style="max-width:480px;margin-top:0"><img src="images/celine-new-13.jpg" alt="Brincos dourados em gota sobre pedra, cartaz da nova coleção"></figure>
+    <div class="grid" style="margin-top:64px" id="nova-grid"></div>
   </section>
   <section class="collection">
     <div class="section">
       <h2>A coleção</h2>
       <p class="sub">Cartões mais pequenos, com mais ar entre cada peça.</p>
-      <div class="grid">
-        <figure class="card"><div class="frame"><img src="images/celine-13.jpg" alt="Argolas octogonais douradas"></div><figcaption><h3>Argolas octogonais</h3><p>Brincos</p><div class="card-actions"><a class="btn-small" href="produto.html?id=p01" target="_blank" rel="noopener">Ver brinco</a><button class="btn-outline" data-add="p01">Adicionar ao carrinho</button></div></figcaption></figure>
-        <figure class="card"><div class="frame"><img src="images/celine-14.jpg" alt="Brincos dourados em flor"></div><figcaption><h3>Brincos flor</h3><p>Brincos</p><div class="card-actions"><a class="btn-small" href="produto.html?id=p02" target="_blank" rel="noopener">Ver brinco</a><button class="btn-outline" data-add="p02">Adicionar ao carrinho</button></div></figcaption></figure>
-        <figure class="card"><div class="frame"><img src="images/celine-15.jpg" alt="Brincos disco borgonha com topo dourado"></div><figcaption><h3>Discos borgonha</h3><p>Brincos</p><div class="card-actions"><a class="btn-small" href="produto.html?id=p03" target="_blank" rel="noopener">Ver brinco</a><button class="btn-outline" data-add="p03">Adicionar ao carrinho</button></div></figcaption></figure>
-        <figure class="card"><div class="frame"><img src="images/celine-16.jpg" alt="Argolas duplas torcidas douradas"></div><figcaption><h3>Argolas duplas torcidas</h3><p>Brincos</p><div class="card-actions"><a class="btn-small" href="produto.html?id=p04" target="_blank" rel="noopener">Ver brinco</a><button class="btn-outline" data-add="p04">Adicionar ao carrinho</button></div></figcaption></figure>
-        <figure class="card"><div class="frame"><img src="images/celine-17.jpg" alt="Argolas hexagonais verde com argolas douradas"></div><figcaption><h3>Hexagonais verde</h3><p>Brincos</p><div class="card-actions"><a class="btn-small" href="produto.html?id=p05" target="_blank" rel="noopener">Ver brinco</a><button class="btn-outline" data-add="p05">Adicionar ao carrinho</button></div></figcaption></figure>
-        <figure class="card"><div class="frame"><img src="images/celine-18.jpg" alt="Argolas douradas em contorno de flor"></div><figcaption><h3>Argolas flor</h3><p>Brincos</p><div class="card-actions"><a class="btn-small" href="produto.html?id=p06" target="_blank" rel="noopener">Ver brinco</a><button class="btn-outline" data-add="p06">Adicionar ao carrinho</button></div></figcaption></figure>
-        <figure class="card"><div class="frame"><img src="images/celine-19.jpg" alt="Brincos quadrados azuis com detalhe dourado"></div><figcaption><h3>Quadrados azuis</h3><p>Brincos</p><div class="card-actions"><a class="btn-small" href="produto.html?id=p07" target="_blank" rel="noopener">Ver brinco</a><button class="btn-outline" data-add="p07">Adicionar ao carrinho</button></div></figcaption></figure>
-        <figure class="card"><div class="frame"><img src="images/celine-20.jpg" alt="Argolas triângulo douradas"></div><figcaption><h3>Argolas triângulo</h3><p>Brincos</p><div class="card-actions"><a class="btn-small" href="produto.html?id=p08" target="_blank" rel="noopener">Ver brinco</a><button class="btn-outline" data-add="p08">Adicionar ao carrinho</button></div></figcaption></figure>
-        <figure class="card"><div class="frame"><img src="images/celine-21.jpg" alt="Conjunto de bolas douradas: brincos e colar"></div><figcaption><h3>Conjunto bolas douradas</h3><p>Colar · Brincos</p><div class="card-actions"><a class="btn-small" href="produto.html?id=p09" target="_blank" rel="noopener">Ver conjunto</a><button class="btn-outline" data-add="p09">Adicionar ao carrinho</button></div></figcaption></figure>
-        <figure class="card"><div class="frame"><img src="images/celine-22.jpg" alt="Brincos longos com bola dourada e cristal"></div><figcaption><h3>Brincos longos bola</h3><p>Brincos</p><div class="card-actions"><a class="btn-small" href="produto.html?id=p10" target="_blank" rel="noopener">Ver brinco</a><button class="btn-outline" data-add="p10">Adicionar ao carrinho</button></div></figcaption></figure>
-      </div>
+      <div class="grid" id="orig-grid"></div>
     </div>
   </section>
-  <section class="order">
-    <h2>Encomendas</h2>
-    <p>Os preços da nova coleção estão em cada cartão. Contactos e formas de entrega ficam por confirmar pela CELINE.</p>
-    <a class="btn" href="index.html">Voltar à página inicial</a>
-  </section>
+  <div class="group-banner" id="group-banner">
+    <h2 style="font-weight:400">O grupo da CELINE</h2>
+    <p>Entre no grupo para receber as novidades em primeira mão e cupons de desconto.</p>
+    <p><a class="btn" data-group-link href="https://chat.whatsapp.com/CELINEGrupo">Entrar no grupo</a></p>
+  </div>
 </main>
 <footer>
-  <img class="footlogo" src="images/celine-logo.png" alt="Logótipo CELINE">
+  <img class="footlogo site-logo" src="images/celine-logo.png" alt="Logótipo CELINE">
   <div class="wm">CELINE</div>
   <p>Bijuteria de luxo · Brincos · Pulseiras · Anéis · Colares</p>
   <p>© 2026 CELINE</p>
 </footer>
-<script src="js/produtos.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+  function card(p){
+    var label = (p.id === "p09" || p.id === "n01" || p.id === "n15" || p.id === "n16") ? "Ver conjunto" : "Ver brinco";
+    var price = p.price ? '<p class="price">' + fmtMT(p.price) + '</p>' : "";
+    return '<figure class="card"><div class="frame"><img src="' + p.img + '" alt="' + p.name + '"></div><figcaption><h3>' + p.name + '</h3><p>' + p.cat + '</p>' + price
+      + '<div class="card-actions"><a class="btn-small" href="produto.html?id=' + p.id + '">' + label + '</a><button class="btn-outline" data-add="' + p.id + '">Adicionar ao carrinho</button></div></figcaption></figure>';
+  }
+  function bind(root){
+    root.querySelectorAll("[data-add]").forEach(function(btn){
+      btn.addEventListener("click", function(){
+        window.celine.addToCart(btn.getAttribute("data-add"), 1);
+        var old = btn.textContent; btn.textContent = "Adicionado ao carrinho ✓";
+        setTimeout(function(){ btn.textContent = old; }, 1800);
+      });
+    });
+  }
+  var nova = document.getElementById("nova-grid");
+  nova.innerHTML = PRODUCTS.filter(function(p){ return p.id.charAt(0) === "n"; }).map(card).join("");
+  bind(nova);
+  var orig = document.getElementById("orig-grid");
+  orig.innerHTML = PRODUCTS.filter(function(p){ return p.id.charAt(0) === "p"; }).map(card).join("");
+  bind(orig);
+});
+</script>
 </body>
 </html>

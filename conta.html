@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CELINE — A minha conta</title>
+<link rel="icon" href="images/celine-logo.png">
+<link rel="stylesheet" href="css/style.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/config.js"></script>
+<script src="js/catalog.js"></script>
+<script src="js/app.js"></script>
+</head>
+<body>
+<header>
+  <div class="head">
+    <nav><a href="index.html">Início</a><a href="colecao.html">Coleção</a><a href="carrinho.html">Carrinho (<span class="cart-count">0</span>)</a><a href="chat.html" data-chat-link>Chat</a></nav>
+    <a class="brand" href="index.html"><img class="logo site-logo" src="images/celine-logo.png" alt="Logótipo CELINE"><span class="wordmark">CELINE</span></a>
+    <a class="cta" href="colecao.html">Ver coleção</a>
+  </div>
+</header>
+<main>
+  <div class="form" id="auth-box">
+    <h1 id="auth-title">Entrar na conta</h1>
+    <p style="color:#666;line-height:1.7">Só email e senha. Sem verificação por email e sem entrar por outra conta. Se ainda não tem conta, ela é criada aqui, com o mesmo email e senha.</p>
+    <form id="auth-form">
+      <label for="email">Email</label>
+      <input id="email" type="email" required autocomplete="email">
+      <label for="password">Senha</label>
+      <input id="password" type="password" required autocomplete="current-password">
+      <label for="whatsapp">WhatsApp (para a sua conta ficar guardada na loja)</label>
+      <input id="whatsapp" type="tel" placeholder="84xxxxxxx ou 85xxxxxxx">
+      <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap">
+        <button class="btn" id="btn-signin" type="submit">Entrar</button>
+        <button class="btn-outline" id="btn-signup" type="button">Criar conta</button>
+      </div>
+    </form>
+    <div class="msg" id="auth-msg" style="display:none"></div>
+  </div>
+  <div class="form" id="account-box" style="display:none">
+    <h1>A minha conta</h1>
+    <p style="color:#666;line-height:1.7">Conta ativa.</p>
+    <p id="account-email"></p>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:16px">
+      <a class="btn" href="chat.html">Abrir o chat</a>
+      <a class="btn-outline" href="carrinho.html">Ver o carrinho</a>
+      <button class="btn-outline" id="btn-signout" type="button">Sair</button>
+    </div>
+    <h2 style="font-weight:400;margin-top:40px">As minhas encomendas</h2>
+    <div id="my-orders"><p>A carregar…</p></div>
+  </div>
+</main>
+<footer>
+  <img class="footlogo site-logo" src="images/celine-logo.png" alt="Logótipo CELINE">
+  <div class="wm">CELINE</div>
+  <p>Bijuteria de luxo · Brincos · Pulseiras · Anéis · Colares</p>
+  <p>© 2026 CELINE</p>
+</footer>
+<script>
+document.addEventListener("DOMContentLoaded", async function(){
+  var params = new URLSearchParams(location.search);
+  var mode = params.get("mode");
+  var preEmail = params.get("email") || "";
+  if (preEmail) document.getElementById("email").value = preEmail;
+  if (mode === "signup") document.getElementById("auth-title").textContent = "Criar conta";
+  var msg = document.getElementById("auth-msg");
+  function showMsg(text, isErr){
+    msg.style.display = "block"; msg.textContent = text;
+    msg.className = isErr ? "msg err" : "msg";
+  }
+  function resumePending(){
+    var p = window.celine.takePending();
+    if (p && p.target) location.href = p.target;
+  }
+  if (!window.celine.configured) {
+    showMsg("A conta ainda está a ser ligada pela loja. Quando o projeto estiver configurado, a conta cria-se aqui sem verificação por email.", false);
+  }
+  var session = await window.celine.getSession();
+  if (session) {
+    document.getElementById("auth-box").style.display = "none";
+    document.getElementById("account-box").style.display = "block";
+    document.getElementById("account-email").textContent = "Email: " + session.user.email;
+    var r = await window.celine.supabase.from("orders").select("id, status, total_mt, created_at").eq("user_id", session.user.id).order("created_at", {ascending: false}).limit(20);
+    var box = document.getElementById("my-orders");
+    if (r.error) { box.innerHTML = "<p>Não foi possível carregar as encomendas.</p>"; }
+    else if (!r.data.length) { box.innerHTML = "<p>Ainda não tem encomendas.</p>"; }
+    else {
+      box.innerHTML = r.data.map(function(o){
+        return "<p>Encomenda " + o.id.slice(0, 8) + " — " + (o.total_mt ? fmtMT(o.total_mt) : "a confirmar") + " — " + o.status + "</p>";
+      }).join("");
+    }
+    document.getElementById("btn-signout").onclick = function(){ window.celine.signOut(); };
+    // If the visitor came here only to finish a pending checkout/chat, the
+    // account already exists now — but stay on the account page; the
+    // pending target is resumed from the checkout/chat buttons.
+    return;
+  }
+  async function doSignUp(){
+    var email = document.getElementById("email").value.trim();
+    var password = document.getElementById("password").value;
+    var whatsapp = document.getElementById("whatsapp").value.trim();
+    if (!window.celine.configured) { showMsg("A conta ainda está a ser ligada pela loja.", true); return; }
+    var r = await window.celine.signUp(email, password, whatsapp);
+    if (r.error) { showMsg(r.error, true); return; }
+    if (r.needsOwnerStep) { showMsg("Conta criada, mas a sessão não abriu de imediato. A loja precisa de confirmar que a verificação por email está desligada no projeto (ver README). Tente entrar novamente.", true); return; }
+    showMsg("Conta criada e sessão iniciada. Sem verificação por email.", false);
+    setTimeout(resumePending, 600);
+  }
+  document.getElementById("btn-signup").onclick = doSignUp;
+  document.getElementById("auth-form").addEventListener("submit", async function(e){
+    e.preventDefault();
+    var email = document.getElementById("email").value.trim();
+    var password = document.getElementById("password").value;
+    var whatsapp = document.getElementById("whatsapp").value.trim();
+    if (!window.celine.configured) { showMsg("A conta ainda está a ser ligada pela loja.", true); return; }
+    var r = await window.celine.signIn(email, password);
+    if (r.notFound) {
+      // Email not found on sign-in → create-account, email already filled.
+      location.href = "conta.html?mode=signup&email=" + encodeURIComponent(email);
+      return;
+    }
+    if (r.error) { showMsg(r.error, true); return; }
+    if (whatsapp && r.session) {
+      await window.celine.supabase.from("profiles").upsert({id: r.session.user.id, email: email, whatsapp: whatsapp});
+    }
+    showMsg("Sessão iniciada.", false);
+    setTimeout(resumePending, 600);
+  });
+});
+</script>
+</body>
+</html>
