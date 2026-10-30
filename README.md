@@ -12,3 +12,10 @@ Site construído a partir do desenho do export giellygreen.co.uk, com as imagens
 - Sem zoom no hover, sem object-cover: as imagens mantêm a sua proporção.
 - Imagem 7 e imagem 12 são o mesmo ficheiro (hash idêntico) — usada só uma vez, para não repetir.
 - Por confirmar pela dona: preços, contactos e entrega. Nenhum contacto ou preço foi inventado.
+
+## Atualização 2026-10-30 — nova coleção, vídeos automáticos, loja
+- Vídeos: sem player — autoplay, muted, loop, playsinline, sem som.
+- Nova coleção: cartaz "Eleve o seu estilo" + 14 cartões com preços em MT escolhidos pela agente a pedido da dona (950–4.800 MT; conjuntos 2.900–4.800 MT).
+- Destaques: +1 foto com pessoa (colar de diamantes, new-14), em grande.
+- Loja: secção "Loja física e online" em Maputo, em alguns pontos da cidade — sem moradas inventadas; moradas exatas por dar pela dona.
+- Imagens novas 16, sem duplicados; duas delas trazem texto/marca próprios na foto (sorbet accessory, EVERSTYLISH) e foram mantidas como enviadas, sem apagar nada.
