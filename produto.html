@@ -47,8 +47,8 @@ document.addEventListener("DOMContentLoaded", function(){
   var qty = 1, qEl = document.getElementById("qty");
   document.getElementById("minus").onclick = function(){ if (qty > 1) { qty--; qEl.textContent = qty; } };
   document.getElementById("plus").onclick = function(){ qty++; qEl.textContent = qty; };
-  document.getElementById("add").onclick = function(e){ window.celine.addToCart(p.id, qty); e.target.textContent = "Adicionado ao carrinho ✓"; };
-  document.getElementById("buy").onclick = function(){ window.celine.addToCart(p.id, qty); location.href = "carrinho.html"; };
+  document.getElementById("add").onclick = async function(e){ var ok = await window.celine.requireAccountForCart(p.id, qty); if (ok) e.target.textContent = "Adicionado ao carrinho ✓"; };
+  document.getElementById("buy").onclick = async function(){ var ok = await window.celine.requireAccountForCart(p.id, qty); if (ok) location.href = "carrinho.html"; };
 });
 </script>
 </body>

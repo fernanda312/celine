@@ -25,6 +25,21 @@
       if (found) found.qty += (qty || 1); else cart.push({id: id, qty: qty || 1});
       window.celine.saveCart(cart);
     },
+    // Nobody adds to the cart without an account. Without a session,
+    // the item is remembered and the visitor is sent to create or
+    // start a session; conta.html adds the remembered item after
+    // sign-in and then goes to the cart.
+    requireAccountForCart: async function(id, qty){
+      var session = await window.celine.getSession();
+      if (!session) {
+        try { localStorage.setItem("celine-pending-add", JSON.stringify({id: id, qty: qty || 1})); } catch (e) {}
+        window.celine.savePending("cart", "carrinho.html");
+        location.href = "conta.html";
+        return false;
+      }
+      window.celine.addToCart(id, qty);
+      return true;
+    },
     updateCartCount: function(){
       var n = window.celine.getCart().reduce(function(s, i){ return s + i.qty; }, 0);
       document.querySelectorAll(".cart-count").forEach(function(el){ el.textContent = n; });
@@ -128,8 +143,9 @@
     window.celine.applySettings();
     window.celine.initGroupBanner();
     document.querySelectorAll("[data-add]").forEach(function(btn){
-      btn.addEventListener("click", function(){
-        window.celine.addToCart(btn.getAttribute("data-add"), 1);
+      btn.addEventListener("click", async function(){
+        var ok = await window.celine.requireAccountForCart(btn.getAttribute("data-add"), 1);
+        if (!ok) return;
         var old = btn.textContent;
         btn.textContent = "Adicionado ao carrinho ✓";
         setTimeout(function(){ btn.textContent = old; }, 1800);

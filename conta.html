@@ -22,17 +22,14 @@
 <main>
   <div class="form" id="auth-box">
     <h1 id="auth-title">Entrar na conta</h1>
-    <p style="color:#666;line-height:1.7">Só email e senha. Sem verificação por email e sem entrar por outra conta. Se ainda não tem conta, ela é criada aqui, com o mesmo email e senha.</p>
+    <p style="color:#666;line-height:1.7">Se não tens conta, ela é criada automaticamente aqui.</p>
     <form id="auth-form">
       <label for="email">Email</label>
       <input id="email" type="email" required autocomplete="email">
       <label for="password">Senha</label>
       <input id="password" type="password" required autocomplete="current-password">
-      <label for="whatsapp">WhatsApp (para a sua conta ficar guardada na loja)</label>
-      <input id="whatsapp" type="tel" placeholder="84xxxxxxx ou 85xxxxxxx">
-      <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap">
+      <div style="margin-top:20px">
         <button class="btn" id="btn-signin" type="submit">Entrar</button>
-        <button class="btn-outline" id="btn-signup" type="button">Criar conta</button>
       </div>
     </form>
     <div class="msg" id="auth-msg" style="display:none"></div>
@@ -69,11 +66,16 @@ document.addEventListener("DOMContentLoaded", async function(){
     msg.className = isErr ? "msg err" : "msg";
   }
   function resumePending(){
+    try {
+      var add = JSON.parse(localStorage.getItem("celine-pending-add") || "null");
+      if (add && add.id) { window.celine.addToCart(add.id, add.qty || 1); }
+      localStorage.removeItem("celine-pending-add");
+    } catch (e) {}
     var p = window.celine.takePending();
     if (p && p.target) location.href = p.target;
   }
   if (!window.celine.configured) {
-    showMsg("A conta ainda está a ser ligada pela loja. Quando o projeto estiver configurado, a conta cria-se aqui sem verificação por email.", false);
+    showMsg("A conta ainda está a ser ligada pela loja.", false);
   }
   var session = await window.celine.getSession();
   if (session) {
@@ -95,34 +97,22 @@ document.addEventListener("DOMContentLoaded", async function(){
     // pending target is resumed from the checkout/chat buttons.
     return;
   }
-  async function doSignUp(){
-    var email = document.getElementById("email").value.trim();
-    var password = document.getElementById("password").value;
-    var whatsapp = document.getElementById("whatsapp").value.trim();
-    if (!window.celine.configured) { showMsg("A conta ainda está a ser ligada pela loja.", true); return; }
-    var r = await window.celine.signUp(email, password, whatsapp);
-    if (r.error) { showMsg(r.error, true); return; }
-    if (r.needsOwnerStep) { showMsg("Conta criada, mas a sessão não abriu de imediato. A loja precisa de confirmar que a verificação por email está desligada no projeto (ver README). Tente entrar novamente.", true); return; }
-    showMsg("Conta criada e sessão iniciada. Sem verificação por email.", false);
-    setTimeout(resumePending, 600);
-  }
-  document.getElementById("btn-signup").onclick = doSignUp;
   document.getElementById("auth-form").addEventListener("submit", async function(e){
     e.preventDefault();
     var email = document.getElementById("email").value.trim();
     var password = document.getElementById("password").value;
-    var whatsapp = document.getElementById("whatsapp").value.trim();
     if (!window.celine.configured) { showMsg("A conta ainda está a ser ligada pela loja.", true); return; }
     var r = await window.celine.signIn(email, password);
     if (r.notFound) {
-      // Email not found on sign-in → create-account, email already filled.
-      location.href = "conta.html?mode=signup&email=" + encodeURIComponent(email);
+      // No account yet: create it here, with the same email and password.
+      var c = await window.celine.signUp(email, password);
+      if (c.error) { showMsg(c.error, true); return; }
+      if (c.needsOwnerStep) { showMsg("Conta criada. Tente entrar novamente.", true); return; }
+      showMsg("Conta criada automaticamente.", false);
+      setTimeout(resumePending, 600);
       return;
     }
     if (r.error) { showMsg(r.error, true); return; }
-    if (whatsapp && r.session) {
-      await window.celine.supabase.from("profiles").upsert({id: r.session.user.id, email: email, whatsapp: whatsapp});
-    }
     showMsg("Sessão iniciada.", false);
     setTimeout(resumePending, 600);
   });

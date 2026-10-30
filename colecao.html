@@ -57,8 +57,9 @@ document.addEventListener("DOMContentLoaded", function(){
   }
   function bind(root){
     root.querySelectorAll("[data-add]").forEach(function(btn){
-      btn.addEventListener("click", function(){
-        window.celine.addToCart(btn.getAttribute("data-add"), 1);
+      btn.addEventListener("click", async function(){
+        var ok = await window.celine.requireAccountForCart(btn.getAttribute("data-add"), 1);
+        if (!ok) return;
         var old = btn.textContent; btn.textContent = "Adicionado ao carrinho ✓";
         setTimeout(function(){ btn.textContent = old; }, 1800);
       });

@@ -99,8 +99,9 @@ document.addEventListener("DOMContentLoaded", function(){
       + label + '</a><button class="btn-outline" data-add="' + p.id + '">Adicionar ao carrinho</button></div></figcaption></figure>';
   }).join("");
   grid.querySelectorAll("[data-add]").forEach(function(btn){
-    btn.addEventListener("click", function(){
-      window.celine.addToCart(btn.getAttribute("data-add"), 1);
+    btn.addEventListener("click", async function(){
+      var ok = await window.celine.requireAccountForCart(btn.getAttribute("data-add"), 1);
+      if (!ok) return;
       var old = btn.textContent; btn.textContent = "Adicionado ao carrinho ✓";
       setTimeout(function(){ btn.textContent = old; }, 1800);
     });
