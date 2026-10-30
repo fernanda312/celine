@@ -55,7 +55,18 @@
   <p>© 2026 CELINE</p>
 </footer>
 <script>
-document.addEventListener("DOMContentLoaded", function(){
+document.addEventListener("DOMContentLoaded", async function(){
+  // The cart belongs to an account. Without an account, there is no
+  // "empty cart" to show — the visitor goes to create an account first
+  // and comes back here after, with the cart remembered.
+  if (window.celine.configured) {
+    var session = await window.celine.getSession();
+    if (!session) {
+      window.celine.savePending("cart", "carrinho.html");
+      location.href = "conta.html";
+      return;
+    }
+  }
   var box = document.getElementById("items"), totalEl = document.getElementById("total");
   function render(){
     var cart = window.celine.getCart();
